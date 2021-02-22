@@ -1,0 +1,145 @@
+backend/config
+
+codeception-local
+
+<?php
+
+return yii\helpers\ArrayHelper::merge(
+    require dirname(dirname(__DIR__)) . '/common/config/codeception-local.php',
+    require __DIR__ . '/main.php',
+    require __DIR__ . '/main-local.php',
+    require __DIR__ . '/test.php',
+    require __DIR__ . '/test-local.php',
+    [
+    ]
+);
+
+
+main-local
+
+
+<?php
+return [
+    'components' => [
+        'request' => [
+            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
+            'cookieValidationKey' => '882UsUGanoF2JMhrrQgC3L7t2fo5yhPt',
+        ],
+    ],
+];
+
+
+
+web/index
+
+<?php
+defined('YII_DEBUG') or define('YII_DEBUG', false);
+defined('YII_ENV') or define('YII_ENV', 'prod');
+
+require __DIR__ . '/../../vendor/autoload.php';
+require __DIR__ . '/../../vendor/yiisoft/yii2/Yii.php';
+require __DIR__ . '/../../common/config/bootstrap.php';
+require __DIR__ . '/../config/bootstrap.php';
+
+$config = yii\helpers\ArrayHelper::merge(
+    require __DIR__ . '/../../common/config/main.php',
+    require __DIR__ . '/../../common/config/main-local.php',
+    require __DIR__ . '/../config/main.php',
+    require __DIR__ . '/../config/main-local.php'
+);
+
+(new yii\web\Application($config))->run();
+
+
+common/config
+
+codeception
+
+
+<?php
+
+return yii\helpers\ArrayHelper::merge(
+    require __DIR__ . '/main.php',
+    require __DIR__ . '/main-local.php',
+    require __DIR__ . '/test.php',
+    require __DIR__ . '/test-local.php',
+    [
+        'components' => [
+            'request' => [
+                // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
+                'cookieValidationKey' => '4loha0j9gV0T7fr0I-hsQ4HTn2q1t_Yn',
+            ],
+        ],
+    ]
+);
+
+
+main-local
+
+<?php
+return [
+    'components' => [
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=ipms_auth',
+            'username' => 'root',
+            'password' => '',
+            'charset' => 'utf8',
+        ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'viewPath' => '@common/mail',
+        ],
+    ],
+];
+
+
+console/config
+
+main-local
+
+<?php
+return [
+];
+
+
+Fontend/config
+
+main-local
+
+<?php
+return [
+    'components' => [
+        'request' => [
+            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
+            'cookieValidationKey' => 'kZ7aX0P0ikYwzS5Zd_SJ5SA8tnGGHEIM',
+        ],
+    ],
+];
+
+
+web/index
+
+<?php
+defined('YII_DEBUG') or define('YII_DEBUG', false);
+defined('YII_ENV') or define('YII_ENV', 'prod');
+
+require __DIR__ . '/../../vendor/autoload.php';
+require __DIR__ . '/../../vendor/yiisoft/yii2/Yii.php';
+require __DIR__ . '/../../common/config/bootstrap.php';
+require __DIR__ . '/../config/bootstrap.php';
+
+$config = yii\helpers\ArrayHelper::merge(
+    require __DIR__ . '/../../common/config/main.php',
+    require __DIR__ . '/../../common/config/main-local.php',
+    require __DIR__ . '/../config/main.php',
+    require __DIR__ . '/../config/main-local.php'
+);
+
+(new yii\web\Application($config))->run();
+
+
+web/robots
+
+User-agent: *
+Allow: /
