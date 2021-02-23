@@ -1,7 +1,8 @@
 <?php
 use yii\bootstrap\Nav;
 use yii\helpers\Url;
-
+$controllerCss = 'active menu-open';
+$actionCss = 'active';
 ?>
 <aside class="main-sidebar">
 
@@ -21,12 +22,12 @@ use yii\helpers\Url;
 
         <ul class="sidebar-menu tree" data-widget="tree">
             <li class="header">Main Navigation</li>
-            <li>
+            <li class="<?= (Yii::$app->controller->id == 'dashboard')?$actionCss:''; ?>">
                 <a href="<?php echo Url::base(true).'/sales/dashboard';?>">
                     <i class="fa fa-calendar" aria-hidden="true"></i> <span>Dashboard</span>
                 </a>
             </li>
-            <li class="active treeview menu-open">
+            <li class="treeview <?= (Yii::$app->controller->id == 'osr')?$controllerCss:''; ?>">
                 <a href="#">
                     <i class="fa fa-users"></i> <span>OSR</span>
                     <span class="pull-right-container">
@@ -34,24 +35,24 @@ use yii\helpers\Url;
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li>
+                    <li class="<?= (Yii::$app->controller->id == 'osr' && Yii::$app->controller->action->id == 'add-sales')?$actionCss:''; ?>">
                         <a href="<?php echo Url::base(true).'/sales/osr/add-sales';?>">
                             <i class="fa fa-address-card-o" aria-hidden="true"></i> <span>Add Sales</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="<?= (Yii::$app->controller->id == 'osr' && Yii::$app->controller->action->id == 'view-sales')?$actionCss:''; ?>">
                         <a href="<?php echo Url::base(true).'/sales/osr/view-sales';?>">
-                            <i class="fa fa-bar-chart" aria-hidden="true"></i> <span>View Sales</span>
+                            <i class="fa fa-bar-chart" aria-hidden="true"></i> <span>Monitoring Sales</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="<?= (Yii::$app->controller->id == 'osr' && Yii::$app->controller->action->id == 'view-report')?$actionCss:''; ?>">
                         <a href="<?php echo Url::base(true).'/sales/osr/view-report';?>">
-                            <i class="fa fa-line-chart" aria-hidden="true"></i> <span>View Report</span>
+                            <i class="fa fa-line-chart" aria-hidden="true"></i> <span>Sales Report</span>
                         </a>
                     </li>
                 </ul>
             </li>
-            <li class="treeview">
+            <li class="treeview <?= (Yii::$app->controller->id == 'junior-leader')?$controllerCss:''; ?>">
                 <a href="#">
                     <i class="fa fa-users"></i> <span>Junior Leader</span>
                     <span class="pull-right-container">
@@ -59,24 +60,24 @@ use yii\helpers\Url;
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li>
+                    <li class="<?= (Yii::$app->controller->id == 'junior-leader' && Yii::$app->controller->action->id == 'add-sales')?$actionCss:''; ?>">
                         <a href="<?php echo Url::base(true).'/sales/junior-leader/add-sales';?>">
                             <i class="fa fa-address-card-o" aria-hidden="true"></i> <span>Add Sales</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="<?php echo Url::base(true).'/sales/junior-leader/view-all-sales';?>">
-                            <i class="fa fa-bar-chart" aria-hidden="true"></i> <span>View Sales</span>
+                    <li class="<?= (Yii::$app->controller->id == 'junior-leader' && Yii::$app->controller->action->id == 'view-sales')?$actionCss:''; ?>">
+                        <a href="<?php echo Url::base(true).'/sales/junior-leader/view-sales';?>">
+                            <i class="fa fa-bar-chart" aria-hidden="true"></i> <span>Sales Monitoring</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="<?= (Yii::$app->controller->id == 'junior-leader' && Yii::$app->controller->action->id == 'view-report')?$actionCss:''; ?>">
                         <a href="<?php echo Url::base(true).'/sales/junior-leader/view-report';?>">
-                            <i class="fa fa-line-chart" aria-hidden="true"></i> <span>View Report</span>
+                            <i class="fa fa-line-chart" aria-hidden="true"></i> <span>Sales Report</span>
                         </a>
                     </li>
                 </ul>
             </li>
-            <li class="treeview">
+            <li class="treeview <?= (Yii::$app->controller->id == 'leader')?$controllerCss:''; ?>">
                 <a href="#">
                     <i class="fa fa-users"></i> <span>Leader</span>
                     <span class="pull-right-container">
@@ -84,24 +85,24 @@ use yii\helpers\Url;
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li>
+                    <li class="<?= (Yii::$app->controller->id == 'leader' && Yii::$app->controller->action->id == 'add-sales')?$actionCss:''; ?>">
                         <a href="<?php echo Url::base(true).'/sales/leader/add-sales';?>">
                             <i class="fa fa-address-card-o" aria-hidden="true"></i> <span>Add Sales</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="<?php echo Url::base(true).'/sales/leader/view-all-sales';?>">
-                            <i class="fa fa-bar-chart" aria-hidden="true"></i> <span>View Sales</span>
+                    <li class="<?= (Yii::$app->controller->id == 'leader' && Yii::$app->controller->action->id == 'view-sales')?$actionCss:''; ?>">
+                        <a href="<?php echo Url::base(true).'/sales/leader/view-sales';?>">
+                            <i class="fa fa-bar-chart" aria-hidden="true"></i> <span>Sales Monitoring</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="<?= (Yii::$app->controller->id == 'leader' && Yii::$app->controller->action->id == 'view-report')?$actionCss:''; ?>">
                         <a href="<?php echo Url::base(true).'/sales/leader/view-report';?>">
-                            <i class="fa fa-line-chart" aria-hidden="true"></i> <span>View Report</span>
+                            <i class="fa fa-line-chart" aria-hidden="true"></i> <span>Sales Report</span>
                         </a>
                     </li>
                 </ul>
             </li>
-            <li class="treeview">
+            <li class="treeview <?= (Yii::$app->controller->id == 'manager')?$controllerCss:''; ?>">
                 <a href="#">
                     <i class="fa fa-users"></i> <span>Manager</span>
                     <span class="pull-right-container">
@@ -109,22 +110,27 @@ use yii\helpers\Url;
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li>
-                        <a href="<?php echo Url::base(true).'/sales/manager/add-sales';?>">
+                    <!--<li class="?= (Yii::$app->controller->id == 'manager' && Yii::$app->controller->action->id == 'add-sales')?$actionCss:''; ?>">
+                        <a href="?php echo Url::base(true).'/sales/manager/add-sales';?>">
                             <i class="fa fa-address-card-o" aria-hidden="true"></i> <span>Add Sales</span>
                         </a>
-                    </li>
-                    <li>
-                        <a href="<?php echo Url::base(true).'/sales/manager/view-all-sales';?>">
-                            <i class="fa fa-bar-chart" aria-hidden="true"></i> <span>View Sales</span>
+                    </li>-->
+                    <li class="<?= (Yii::$app->controller->id == 'manager' && Yii::$app->controller->action->id == 'view-sales')?$actionCss:''; ?>">
+                        <a href="<?php echo Url::base(true).'/sales/manager/view-sales';?>">
+                            <i class="fa fa-bar-chart" aria-hidden="true"></i> <span>Sales Monitoring</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="<?= (Yii::$app->controller->id == 'manager' && Yii::$app->controller->action->id == 'view-report')?$actionCss:''; ?>">
                         <a href="<?php echo Url::base(true).'/sales/manager/view-report';?>">
-                            <i class="fa fa-line-chart" aria-hidden="true"></i> <span>View Report</span>
+                            <i class="fa fa-line-chart" aria-hidden="true"></i> <span>Sales Report</span>
                         </a>
                     </li>
                 </ul>
+            </li>
+            <li class="<?= (Yii::$app->controller->id == 'csr')?$actionCss:''; ?>">
+                <a href="<?php echo Url::base(true).'/sales/csr';?>">
+                    <i class="fa fa-calendar" aria-hidden="true"></i> <span>CSR</span>
+                </a>
             </li>
         </ul>
     </section>

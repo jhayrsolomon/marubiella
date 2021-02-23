@@ -5,25 +5,25 @@ namespace frontend\modules\sales\controllers;
 use Yii;
 use frontend\modules\models\SalesOnline;
 use frontend\modules\models\SalesOnlineSearch;
+use frontend\modules\models\Customer;
+use frontend\modules\models\CustomerType;
+use frontend\modules\models\Product;
+use frontend\modules\models\SalesProduct;
+use frontend\modules\models\Refbrgy;
+use frontend\modules\models\Refcitymun;
+use frontend\modules\models\Refprovince;
+use frontend\modules\models\Refregion;
+use frontend\modules\models\SalesStatus;
+use frontend\modules\models\Employee;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
-use frontend\modules\models\SalesProduct;
-use frontend\modules\models\Customer;
-use frontend\modules\models\CustomerType;
-use frontend\modules\models\Product;
-use frontend\modules\models\SalesStatus;
-use frontend\modules\models\Employee;
-use frontend\modules\models\Refbrgy;
-use frontend\modules\models\Refcitymun;
-use frontend\modules\models\Refprovince;
-use frontend\modules\models\REfregion;
 
 /**
- * OsrController implements the CRUD actions for SalesOnline model.
+ * JuniorLeaderController implements the CRUD actions for SalesOnline model.
  */
-class OsrController extends Controller
+class JuniorLeaderController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -46,14 +46,13 @@ class OsrController extends Controller
      */
     public function actionIndex()
     {
-        /*$searchModel = new SalesOnlineSearch();
+        $searchModel = new SalesOnlineSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);*/
-        return $this->redirect(['/sales/dashboard']);
+        ]);
     }
 
     /**
@@ -64,7 +63,7 @@ class OsrController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('crud/view', [
+        return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -225,13 +224,31 @@ class OsrController extends Controller
     }
 
     /**
+     * Creates a new SalesOnline model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    /*public function actionCreate()
+    {
+        $model = new SalesOnline();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+    }*/
+
+    /**
      * Updates an existing SalesOnline model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    /*public function actionUpdate($id)
+    public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
@@ -239,10 +256,10 @@ class OsrController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->render('crud/update', [
+        return $this->render('update', [
             'model' => $model,
         ]);
-    }*/
+    }
 
     /**
      * Deletes an existing SalesOnline model.
@@ -251,57 +268,11 @@ class OsrController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    /*public function actionDelete($id)
+    public function actionDelete($id)
     {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
-    }*/
-    
-    public function actionLoadprovince()
-    {
-        if(isset($_POST['region_id'])){
-            $region = Refregion::find()->where(['id' => $_POST['region_id']])->one();
-            $data = Refprovince::find()->where(['regCode' => $region->regCode])->all();
-            \Yii::$app->response->format = 'json';
-            return $data;
-        }
-    }
-    
-    public function actionLoadmunicipality()
-    {
-        if(isset($_POST['province_id'])){
-            $province = Refprovince::find()->where(['id' => $_POST['province_id']])->one();
-            $data = Refcitymun::find()->where(['regDesc' => $province->regCode, 'provCode' => $province->provCode])->all();
-            \Yii::$app->response->format = 'json';
-            return $data;
-        }
-    }
-    
-    public function actionLoadbarangay()
-    {
-        if(isset($_POST['municipality_id'])){
-            $municipality = Refcitymun::find()->where(['id' => $_POST['municipality_id']])->one();
-            $data = Refbrgy::find()->where(['regCode' => $municipality->regDesc, 'provCode' => $municipality->provCode, 'citymunCode' => $municipality->citymunCode])->all();
-            \Yii::$app->response->format = 'json';
-            return $data;
-        }
-    }
-    
-    public function actionGetproductdetails()
-    {
-        if(isset($_POST['prod_id'])){
-            $product = Product::find()->where(['id'=>$_POST['prod_id']])->one();
-            \Yii::$app->response->format = 'json';
-            return $product;
-        }
-    }
-    
-    public function actionGetproductsall()
-    {
-        $product = Product::find()->all();
-        \Yii::$app->response->format = 'json';
-        return $product;
     }
 
     /**

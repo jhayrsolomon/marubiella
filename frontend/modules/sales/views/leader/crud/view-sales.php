@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
 
 $this->title = 'OSR';
 //$this->params['breadcrumbs'][] = $this->title;
-$context = 'Sales Monitoring';
+$context = 'Sales';
 $this->params['breadcrumbs'][] = ['label' => 'Sales Onlines', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -33,44 +33,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
         </div>
-        <!--<div class="row">
-            <div class="col-sm-12">
-                ?= Html::a('Export Sales', 
-                    [''], [
-                    'data-method' => 'POST',
-                    'data-params' => [
-                        'view_date_sales' => 'view_sales_week',
-                    ],
-                    'class' => ['btn btn-danger pull-right'],
-                ]) ?>
-
-                ?php
-                    echo '<div class="input-group drp-container pull-right">';
-                    echo DateRangePicker::widget([
-                        'name'=>'date_range_1',
-                        'value'=>date('01'.'-M-y').' to '.date('t-M-y'),
-                        'convertFormat'=>true,
-                        'useWithAddon'=>true,
-                        'pluginOptions'=>[
-                            'locale'=>[
-                                'format'=>'d-M-y',
-                                'separator'=>' to ',
-                            ],
-                            'opens'=>'left'
-                        ]
-                    ]);
-                    echo '</div>';
-                ?>
-                ?php 
-                    echo '<div class="input-group-append pull-right text-center">
-                        <span class="input-group-text">
-                            <i class="glyphicon glyphicon-calendar"></i>
-                        </span>
-                    </div>';
-                    echo '<label class="control-label pull-right text-center">Date Range</label>';
-                ?>
-            </div>
-        </div>-->
         <div class="row">
             <div class="col-sm-12">
                 <table id="in_out_record" class="table table-sm table-condensed table-bordered">
@@ -112,7 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     }
                                 ?>
                                 <?= Html::a('Today', 
-                                    ['/sales/osr/view-sales'], [
+                                    ['/sales/leader/view-sales'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
                                         'view_date_sales' => 'view_sales_today',
@@ -120,7 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'class' => ['btn btn-primary '.$salestoday],
                                 ]) ?>
                                 <?= Html::a('This Week', 
-                                    ['/sales/osr/view-sales'], [
+                                    ['/sales/leader/view-sales'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
                                         'view_date_sales' => 'view_sales_week',
@@ -128,7 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'class' => ['btn btn-primary '.$salesweek],
                                 ]) ?>
                                 <?= Html::a('This Month', 
-                                    ['/sales/osr/view-sales'], [
+                                    ['/sales/leader/view-sales'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
                                         'view_date_sales' => 'view_sales_month',
@@ -136,7 +98,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'class' => ['btn btn-primary '.$salesmonth],
                                 ]) ?>
                                 <?= Html::a('All', 
-                                    ['/sales/osr/view-sales'], [
+                                    ['/sales/leader/view-sales'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
                                         'view_date_sales' => 'view_sales_all',
@@ -228,6 +190,44 @@ $this->params['breadcrumbs'][] = $this->title;
                         <td></td>
                     </tfoot>
                 </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <?= Html::a('Export Sales', 
+                    [''], [
+                    'data-method' => 'POST',
+                    'data-params' => [
+                        'view_date_sales' => 'view_sales_week',
+                    ],
+                    'class' => ['btn btn-danger pull-right'],
+                ]) ?>
+
+                <?php
+                    echo '<div class="input-group drp-container pull-right">';
+                    echo DateRangePicker::widget([
+                        'name'=>'date_range_1',
+                        'value'=>date('01'.'-M-y').' to '.date('t-M-y'),
+                        'convertFormat'=>true,
+                        'useWithAddon'=>true,
+                        'pluginOptions'=>[
+                            'locale'=>[
+                                'format'=>'d-M-y',
+                                'separator'=>' to ',
+                            ],
+                            'opens'=>'left'
+                        ]
+                    ]);
+                    echo '</div>';
+                ?>
+                <?php 
+                    echo '<div class="input-group-append pull-right text-center">
+                        <span class="input-group-text">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </span>
+                    </div>';
+                    echo '<label class="control-label pull-right text-center">Date Range</label>';
+                ?>
             </div>
         </div>
     </div>

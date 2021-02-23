@@ -5,25 +5,25 @@ namespace frontend\modules\sales\controllers;
 use Yii;
 use frontend\modules\models\SalesOnline;
 use frontend\modules\models\SalesOnlineSearch;
+use frontend\modules\models\Customer;
+use frontend\modules\models\CustomerType;
+use frontend\modules\models\Product;
+use frontend\modules\models\SalesProduct;
+use frontend\modules\models\Refbrgy;
+use frontend\modules\models\Refcitymun;
+use frontend\modules\models\Refprovince;
+use frontend\modules\models\Refregion;
+use frontend\modules\models\SalesStatus;
+use frontend\modules\models\Employee;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
-use frontend\modules\models\SalesProduct;
-use frontend\modules\models\Customer;
-use frontend\modules\models\CustomerType;
-use frontend\modules\models\Product;
-use frontend\modules\models\SalesStatus;
-use frontend\modules\models\Employee;
-use frontend\modules\models\Refbrgy;
-use frontend\modules\models\Refcitymun;
-use frontend\modules\models\Refprovince;
-use frontend\modules\models\REfregion;
 
 /**
- * OsrController implements the CRUD actions for SalesOnline model.
+ * LeaderController implements the CRUD actions for SalesOnline model.
  */
-class OsrController extends Controller
+class LeaderController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -46,14 +46,13 @@ class OsrController extends Controller
      */
     public function actionIndex()
     {
-        /*$searchModel = new SalesOnlineSearch();
+        $searchModel = new SalesOnlineSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);*/
-        return $this->redirect(['/sales/dashboard']);
+        ]);
     }
 
     /**
@@ -64,11 +63,11 @@ class OsrController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('crud/view', [
+        return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
     }
-    
+
     public function actionViewReport()
     {
         $user_id = Yii::$app->user->identity->id;
@@ -100,8 +99,35 @@ class OsrController extends Controller
             $start_Date = date('Y-m-d',strtotime('last Monday'));
             $sales = Yii::$app->marubiella->createCommand('SELECT from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") as pdate, sales_product.product_id, SUM(sales_product.quantity) as sum_qty FROM sales_product INNER JOIN sales_online ON sales_product.sales_online_id = sales_online.id WHERE sales_online.sales_status_id = 2 and sales_online.date_created between "'.$start_Date.'" and "'.$end_Date.'" GROUP BY sales_product.product_id, from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") ORDER BY from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d"), sales_product.product_id ASC')->queryAll();
         }
+        if(isset($_POST['team_date_sales'])){
+            if($_POST['team_date_sales'] == 'team_sales_all'){
+                //$sales = SalesOnline::find()->where(['employee_id'=>$employee->id])->all();
+                $teamsales = Yii::$app->marubiella->createCommand('SELECT from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") as pdate, sales_product.product_id, SUM(sales_product.quantity) as sum_qty FROM sales_product INNER JOIN sales_online ON sales_product.sales_online_id = sales_online.id WHERE sales_online.sales_status_id = 2 GROUP BY sales_product.product_id, from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") ORDER BY from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d"), sales_product.product_id ASC')->queryAll();
+            } else {
+                if($_POST['team_date_sales'] == 'team_sales_week'){
+                    $d = date('d',strtotime('last Monday'));
+                    $end_Date = date_format(date_create(date('Y-m-').($d+6)), 'Y-m-d');
+                    $start_Date = date('Y-m-d',strtotime('last Monday'));
+                }
+                if($_POST['team_date_sales'] == 'team_sales_month'){
+                    $start_Date = date_format(date_create(date('Y-m-').'1'), 'Y-m-d');
+                    $end_Date = date('Y-m-t');
+                }
+                if($_POST['team_date_sales'] == 'team_sales_today'){
+                    $start_Date = date('Y-m-d');
+                    $end_Date = date('Y-m-d');
+                }
+                $teamsales = Yii::$app->marubiella->createCommand('SELECT from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") as pdate, sales_product.product_id, SUM(sales_product.quantity) as sum_qty FROM sales_product INNER JOIN sales_online ON sales_product.sales_online_id = sales_online.id WHERE sales_online.sales_status_id = 2 and sales_online.date_created between "'.$start_Date.'" and "'.$end_Date.'" GROUP BY sales_product.product_id, from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") ORDER BY from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d"), sales_product.product_id ASC')->queryAll();
+            }
+        } else {
+            $d = date('d',strtotime('last Monday'));
+            $end_Date = date_format(date_create(date('Y-m-').($d+6)), 'Y-m-d');
+            $start_Date = date('Y-m-d',strtotime('last Monday'));
+            $teamsales = Yii::$app->marubiella->createCommand('SELECT from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") as pdate, sales_product.product_id, SUM(sales_product.quantity) as sum_qty FROM sales_product INNER JOIN sales_online ON sales_product.sales_online_id = sales_online.id WHERE sales_online.sales_status_id = 2 and sales_online.date_created between "'.$start_Date.'" and "'.$end_Date.'" GROUP BY sales_product.product_id, from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") ORDER BY from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d"), sales_product.product_id ASC')->queryAll();
+        }
         return $this->render('crud/view-report', [
             'sales' => $sales,
+            'teamsales' => $teamsales,
             'employee' => $employee,
         ]);
     }
@@ -223,6 +249,23 @@ class OsrController extends Controller
             'salesStatus' => $salesStatus,
         ]);
     }
+    /**
+     * Creates a new SalesOnline model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    /*public function actionCreate()
+    {
+        $model = new SalesOnline();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+    }*/
 
     /**
      * Updates an existing SalesOnline model.
@@ -231,7 +274,7 @@ class OsrController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    /*public function actionUpdate($id)
+    public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
@@ -239,10 +282,10 @@ class OsrController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->render('crud/update', [
+        return $this->render('update', [
             'model' => $model,
         ]);
-    }*/
+    }
 
     /**
      * Deletes an existing SalesOnline model.
@@ -251,57 +294,11 @@ class OsrController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    /*public function actionDelete($id)
+    public function actionDelete($id)
     {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
-    }*/
-    
-    public function actionLoadprovince()
-    {
-        if(isset($_POST['region_id'])){
-            $region = Refregion::find()->where(['id' => $_POST['region_id']])->one();
-            $data = Refprovince::find()->where(['regCode' => $region->regCode])->all();
-            \Yii::$app->response->format = 'json';
-            return $data;
-        }
-    }
-    
-    public function actionLoadmunicipality()
-    {
-        if(isset($_POST['province_id'])){
-            $province = Refprovince::find()->where(['id' => $_POST['province_id']])->one();
-            $data = Refcitymun::find()->where(['regDesc' => $province->regCode, 'provCode' => $province->provCode])->all();
-            \Yii::$app->response->format = 'json';
-            return $data;
-        }
-    }
-    
-    public function actionLoadbarangay()
-    {
-        if(isset($_POST['municipality_id'])){
-            $municipality = Refcitymun::find()->where(['id' => $_POST['municipality_id']])->one();
-            $data = Refbrgy::find()->where(['regCode' => $municipality->regDesc, 'provCode' => $municipality->provCode, 'citymunCode' => $municipality->citymunCode])->all();
-            \Yii::$app->response->format = 'json';
-            return $data;
-        }
-    }
-    
-    public function actionGetproductdetails()
-    {
-        if(isset($_POST['prod_id'])){
-            $product = Product::find()->where(['id'=>$_POST['prod_id']])->one();
-            \Yii::$app->response->format = 'json';
-            return $product;
-        }
-    }
-    
-    public function actionGetproductsall()
-    {
-        $product = Product::find()->all();
-        \Yii::$app->response->format = 'json';
-        return $product;
     }
 
     /**

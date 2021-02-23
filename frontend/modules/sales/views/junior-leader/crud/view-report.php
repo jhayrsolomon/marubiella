@@ -1,22 +1,20 @@
 <?php
 
 use yii\helpers\Html;
-use frontend\modules\models\Employee;
-use frontend\modules\models\SalesOnline;
-use frontend\modules\models\Product;
-use frontend\modules\models\SalesStatus;
-use frontend\modules\models\Customer;
-use frontend\modules\models\SalesProduct;
 use kartik\daterange\DateRangePicker;
 use yii\widgets\ActiveForm;
 
+use frontend\modules\models\Product;
+
 $this->title = 'OSR';
 //$this->params['breadcrumbs'][] = $this->title;
-$context = 'Sales Monitoring';
+$context = 'Sales Report';
 $this->params['breadcrumbs'][] = ['label' => 'Sales Onlines', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 
+$product = Product::find()->all();
+$countP = count($product);
 ?>
 <div class="sales-online-view-sales" style="background-color: white;">
     <div class="container-fluid">
@@ -35,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <!--<div class="row">
             <div class="col-sm-12">
-                ?= Html::a('Export Sales', 
+                ?= Html::a('Export Report', 
                     [''], [
                     'data-method' => 'POST',
                     'data-params' => [
@@ -77,28 +75,28 @@ $this->params['breadcrumbs'][] = $this->title;
                 <!--<table id="in_out_record" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">-->
                     <thead>
                         <tr class="bg-info">
-                            <th colspan="10">
+                            <th colspan="<?= ($countP+2); ?>">
                                 <?php
-                                    if(isset($_POST['view_date_sales'])){
-                                        if($_POST['view_date_sales'] == 'view_sales_today'){
+                                    if(isset($_POST['date_sales'])){
+                                        if($_POST['date_sales'] == 'sales_today'){
                                             $salestoday = 'btn-md active';
                                             $salesall = 'btn-md';
                                             $salesweek = 'btn-sm';
                                             $salesmonth = 'btn-sm';
                                         }
-                                        if($_POST['view_date_sales'] == 'view_sales_all'){
+                                        if($_POST['date_sales'] == 'sales_all'){
                                             $salestoday = 'btn-md';
                                             $salesall = 'btn-md active';
                                             $salesweek = 'btn-sm';
                                             $salesmonth = 'btn-sm';
                                         }
-                                        if($_POST['view_date_sales'] == 'view_sales_week'){
+                                        if($_POST['date_sales'] == 'sales_week'){
                                             $salestoday = 'btn-sm';
                                             $salesall = 'btn-sm';
                                             $salesweek = 'btn-md active';
                                             $salesmonth = 'btn-sm';
                                         }
-                                        if($_POST['view_date_sales'] == 'view_sales_month'){
+                                        if($_POST['date_sales'] == 'sales_month'){
                                             $salestoday = 'btn-sm';
                                             $salesall = 'btn-sm';
                                             $salesweek = 'btn-sm';
@@ -112,34 +110,34 @@ $this->params['breadcrumbs'][] = $this->title;
                                     }
                                 ?>
                                 <?= Html::a('Today', 
-                                    ['/sales/osr/view-sales'], [
+                                    ['/sales/junior-leader/view-report'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
-                                        'view_date_sales' => 'view_sales_today',
+                                        'date_sales' => 'sales_today',
                                     ],
                                     'class' => ['btn btn-primary '.$salestoday],
                                 ]) ?>
                                 <?= Html::a('This Week', 
-                                    ['/sales/osr/view-sales'], [
+                                    ['/sales/junior-leader/view-report'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
-                                        'view_date_sales' => 'view_sales_week',
+                                        'date_sales' => 'sales_week',
                                     ],
                                     'class' => ['btn btn-primary '.$salesweek],
                                 ]) ?>
                                 <?= Html::a('This Month', 
-                                    ['/sales/osr/view-sales'], [
+                                    ['/sales/junior-leader/view-report'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
-                                        'view_date_sales' => 'view_sales_month',
+                                        'date_sales' => 'sales_month',
                                     ],
                                     'class' => ['btn btn-primary '.$salesmonth],
                                 ]) ?>
                                 <?= Html::a('All', 
-                                    ['/sales/osr/view-sales'], [
+                                    ['/sales/junior-leader/view-report'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
-                                        'view_date_sales' => 'view_sales_all',
+                                        'date_sales' => 'sales_all',
                                     ],
                                     'class' => ['btn btn-primary '.$salesall],
                                 ]) ?>
@@ -154,78 +152,68 @@ $this->params['breadcrumbs'][] = $this->title;
                                     </div>
                                 </div>
                             </th>
-                            <th colspan="7"></th>
+                            <th colspan="<?= ($countP-1); ?>"></th>
                         </tr>
                         <tr>
-                            <th class="text-center" width="2%">#</th>
-                            <th class="text-center" width="11%">Date</th>
-                            <th class="text-center" width="15%">Products</th>
-                            <th class="text-center" width="5%">Qty</th>
-                            <th class="text-center" width="8%">Add-ons</th>
-                            <th class="text-center" width="10%">Price</th>
-                            <th class="text-center" width="15%">Name</th>
-                            <th class="text-center" width="12%">Status</th>
-                            <th class="text-center" width="12%">Log Status</th>
-                            <th class="text-center" width="12%">Del. Status</th>
+                            <th>Date</th>
+                            <?php
+                                foreach($product as $item){
+                                    echo "<th>".$item->product_name."</th>";
+                                }
+                            ?>
+                            <th>Total</th>
                         </tr>
                     </thead>
-                    <tbody class="text-center">
+                    <tbody>
                         <?php
-                            $totalqty = 0;
-                            $totalprice = 0;
-                            if(count($sales) == 0){
-                                echo "<tr><td colspan='8'>No Record(s)</td></tr>";
-                            } else {
-                                foreach($sales as $key=>$value){
-                                    $status = SalesStatus::find()->where(['id'=>$value->sales_status_id])->one();
-                                    $customer = Customer::find()->where(['id'=>$value->customer_id])->one();
-                                    $customerName = $customer->customer_firstname.' '.$customer->customer_lastname;
-                                    //$product = Product::find()->where(['IN', 'id', json_decode($value->product_id)])->all();
-                                    $productSales = SalesProduct::find()->where(['sales_online_id'=>$value->id])->all();
-                                    $productId = array();
-                                    foreach($productSales as $item){
-                                        array_push($productId, $item->product_id);
+                            $countS = count($sales);
+                            for($x=0; $x < $countP; $x++){
+                                $totaly[$x] = 0;
+                            }
+                            $totalAll = 0;
+                            for($s=0; $s < $countS; $s++){
+                                $p = $s;
+                                $totalx = 0;
+                                echo "<tr>
+                                    <td>".$sales[$s]['pdate']."</td>";
+                                for($x=0; $x < $countP; $x++){
+                                    if(isset($sales[$p]['pdate'])){
+                                        if($sales[$s]['pdate'] == $sales[$p]['pdate']){
+                                            //echo "<td>".$sales[$x]['sum_qty']."</td>";
+                                            $totaly[$x] += $sales[$p]['sum_qty'];
+                                            echo "<td>".$sales[$p]['sum_qty']."</td>";
+                                            $totalx += $sales[$p]['sum_qty'];
+                                            $p++;
+                                        } else {
+                                            echo "<td>0</td>";
+                                            break;
+                                        }
+                                    } else {
+                                        echo "<td>0</td>";
                                     }
-                                    $product = Product::find()->where(['IN', 'id', $productId])->all();
-                                    echo "<tr>
-                                        <td class='text-center'>".($key+1)."</td>
-                                        <td class='text-center'>".date('Y-m-d', strtotime($value->date_created))."</td>
-                                        <td>";
-                                        foreach($product as $p){
-                                            echo $p->product_name.'<br>';
-                                        }
-                                        echo "</td>
-                                        <td>";
-                                        foreach($productSales as $q){
-                                            echo $q->quantity.'<br>';
-                                            $totalqty += (int)$q->quantity;
-                                        }
-                                        echo "</td>
-                                        <td></td>
-                                        <td>";
-                                        foreach($productSales as $a){
-                                            echo number_format($a->collectible_amount, 2, '.', ',').'<br>';
-                                            $totalprice += (int)$a->collectible_amount;
-                                        }
-                                        echo "</td>
-                                        <td>".$customerName."</td>
-                                        <td>".$status->sales_status_name."</td>
-                                        <td>".$value->dispatcher_remark."</td>
-                                        <td>".$value->dispatcher_remark."</td>
-                                    </tr>";
                                 }
+                                echo "<td>".$totalx."</td>";
+                                $totalAll += $totalx;
+                                $s=($p-1);
+                                echo "</tr>";
+                                
                             }
                         ?>
                     </tbody>
-                    <tfoot class="text-center">
-                        <td colspan="3"><strong>TOTAL</strong></td>
-                        <td><strong><?= $totalqty; ?></strong></td>
-                        <td></td>
-                        <td><strong><?= number_format($totalprice, 2, '.', ','); ?></strong></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                    <tfoot>
+                        <tr>
+                            <th><strong>Total</strong></th>
+                            <?php
+                                for($x=0; $x<count($totaly); $x++){
+                                    echo "<th><strong>".$totaly[$x]."</strong></th>";
+                                }
+                                echo "<th></th>";
+                            ?>
+                        </tr>
+                        <tr>
+                            <th colspan="<?= ($countP+1); ?>">Grand Total</th>
+                            <th class="bg-info"><?= $totalAll; ?></th>
+                        </tr>
                     </tfoot>
                 </table>
             </div>
