@@ -2,6 +2,8 @@
 use yii\bootstrap\Nav;
 use yii\helpers\Url;
 
+$controllerCss = 'active menu-open';
+$actionCss = 'active';
 ?>
 <aside class="main-sidebar">
 
@@ -21,12 +23,12 @@ use yii\helpers\Url;
 
         <ul class="sidebar-menu tree" data-widget="tree">
             <li class="header">Main Navigation</li>
-            <li>
-                <a href="<?php echo Url::base(true).'/customers/dashboard';?>">
+            <li class="<?= (Yii::$app->controller->id == 'dashboard')?$actionCss:''; ?>">
+                <a href="<?php echo Url::base(true).'/administration/dashboard';?>">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                 </a>
             </li>
-            <li class="treeview">
+            <li class="treeview <?= (Yii::$app->controller->id == 'employee')?$controllerCss:''; ?>">
                 <a href="#">
                     <i class="fa fa-users"></i> <span>Employee</span>
                     <span class="pull-right-container">
@@ -34,21 +36,21 @@ use yii\helpers\Url;
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li>
+                    <li class="<?= (Yii::$app->controller->id == 'employee' && Yii::$app->controller->action->id == 'master-list')?$actionCss:''; ?>">
                         <a href="<?php echo Url::base(true).'/administration/employee/master-list'?>"><i class="fa fa-list-alt"></i>Master List</a>
                     </li>
-                    <li>
+                    <li class="<?= (Yii::$app->controller->id == 'employee' && Yii::$app->controller->action->id == 'attendance')?$actionCss:''; ?>">
                         <a href="<?php echo Url::base(true).'/administration/employee/attendance'?>"><i class="fa fa-list-alt"></i>Attendance</a>
                     </li>
-                    <li>
+                    <li class="<?= (Yii::$app->controller->id == 'employee' && Yii::$app->controller->action->id == 'payroll')?$actionCss:''; ?>">
                         <a href="<?php echo Url::base(true).'/administration/employee/payroll'?>"><i class="fa fa-list-alt"></i>Payroll</a>
                     </li>
-                    <li>
+                    <li class="<?= (Yii::$app->controller->id == 'employee' && Yii::$app->controller->action->id == 'status')?$actionCss:''; ?>">
                         <a href="<?php echo Url::base(true).'/administration/employee/status'?>"><i class="fa fa-list-alt"></i>Status</a>
                     </li>
                 </ul>
             </li>
-            <li class="treeview">
+            <li class="treeview <?= (Yii::$app->controller->id == 'employment-designation' || Yii::$app->controller->id == 'employment-status')?$controllerCss:''; ?>">
                 <a href="#">
                     <i class="fa fa-users"></i> <span>Employment</span>
                     <span class="pull-right-container">
@@ -56,10 +58,10 @@ use yii\helpers\Url;
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li>
+                    <li class="<?= (Yii::$app->controller->id == 'employment-designation')?$actionCss:''; ?>">
                         <a href="<?php echo Url::base(true).'/administration/employment-designation'?>"><i class="fa fa-list-alt"></i>Designation</a>
                     </li>
-                    <li>
+                    <li class="<?= (Yii::$app->controller->id == 'employment-status')?$actionCss:''; ?>">
                         <a href="<?php echo Url::base(true).'/administration/employment-status'?>"><i class="fa fa-list-alt"></i>Status</a>
                     </li>
                 </ul>

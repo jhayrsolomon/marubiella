@@ -26,20 +26,20 @@ use yii\helpers\Url;
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                 </a>
             </li>
-            <li>
-                <a href="<?php echo Url::base(true).'/employee/master-list'?>"><i class="fa fa-list-alt"></i>Master List</a>
+            <!--<li>
+                <a href="?php echo Url::base(true).'/employee/master-list'?>"><i class="fa fa-list-alt"></i>Master List</a>
             </li>
             <li>
-                <a href="<?php echo Url::base(true).'/employee/employment-designation'?>"><i class="fa fa-list-alt"></i>Employment Designation</a>
+                <a href="?php echo Url::base(true).'/employee/employment-designation'?>"><i class="fa fa-list-alt"></i>Employment Designation</a>
             </li>
             <li>
-                <a href="<?php echo Url::base(true).'/employee/employment-status'?>"><i class="fa fa-circle-o"></i>Employment Status</a>
+                <a href="?php echo Url::base(true).'/employee/employment-status'?>"><i class="fa fa-circle-o"></i>Employment Status</a>
             </li>
             <li>
-                <a href="<?php echo Url::base(true).'/employee/status'?>">
+                <a href="?php echo Url::base(true).'/employee/status'?>">
                     <i class="glyphicon glyphicon-stats"></i> <span>Status</span>
                 </a>
-            </li>
+            </li>-->
             <!--<li class="treeview">
                 <a href="#">
                     <i class="fa fa-users"></i> <span>Employee</span>

@@ -8,7 +8,7 @@ use frontend\modules\models\Product;
 
 $this->title = 'OSR';
 //$this->params['breadcrumbs'][] = $this->title;
-$context = 'Report';
+$context = 'Sales Report';
 $this->params['breadcrumbs'][] = ['label' => 'Sales Onlines', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -33,6 +33,12 @@ $countP = count($product);
         </div>
         <div class="row">
             <div class="col-sm-12">
+                <div class="col-sm-md-6 form-group pull-left">
+                    <!--<label for="employee-id" class="col-sm-2 col-form-label"><h5><strong>Leader</strong></h5></label>-->
+                    <?php $form = ActiveForm::begin(); ?>
+                    <?= $form->field($model, 'id')->dropDownList($leader, ['prompt'=>'Select Leader', 'class' => 'col-sm-10 form-control form-control-sm', 'onchange' => 'getDetails(0);'])->label('Leader'); ?>
+                    <?php ActiveForm::end(); ?>
+                </div>
                 <?= Html::a('Export Report', 
                     [''], [
                     'data-method' => 'POST',
@@ -60,12 +66,12 @@ $countP = count($product);
                     echo '</div>';
                 ?>
                 <?php 
-                    echo '<div class="input-group-append pull-right text-center">
+                    echo '<div class="input-group-append pull-right">
                         <span class="input-group-text">
                             <i class="glyphicon glyphicon-calendar"></i>
                         </span>
                     </div>';
-                    echo '<label class="control-label pull-right text-center">Date Range</label>';
+                    echo '<label class="control-label pull-right">Date Range</label>';
                 ?>
             </div>
         </div>
@@ -77,26 +83,26 @@ $countP = count($product);
                         <tr class="bg-info">
                             <th colspan="<?= ($countP+2); ?>">
                                 <?php
-                                    if(isset($_POST['view_date_sales'])){
-                                        if($_POST['view_date_sales'] == 'view_sales_today'){
+                                    if(isset($_POST['date_sales'])){
+                                        if($_POST['date_sales'] == 'sales_today'){
                                             $salestoday = 'btn-md active';
                                             $salesall = 'btn-md';
                                             $salesweek = 'btn-sm';
                                             $salesmonth = 'btn-sm';
                                         }
-                                        if($_POST['view_date_sales'] == 'view_sales_all'){
+                                        if($_POST['date_sales'] == 'sales_all'){
                                             $salestoday = 'btn-md';
                                             $salesall = 'btn-md active';
                                             $salesweek = 'btn-sm';
                                             $salesmonth = 'btn-sm';
                                         }
-                                        if($_POST['view_date_sales'] == 'view_sales_week'){
+                                        if($_POST['date_sales'] == 'sales_week'){
                                             $salestoday = 'btn-sm';
                                             $salesall = 'btn-sm';
                                             $salesweek = 'btn-md active';
                                             $salesmonth = 'btn-sm';
                                         }
-                                        if($_POST['view_date_sales'] == 'view_sales_month'){
+                                        if($_POST['date_sales'] == 'sales_month'){
                                             $salestoday = 'btn-sm';
                                             $salesall = 'btn-sm';
                                             $salesweek = 'btn-sm';
@@ -113,7 +119,7 @@ $countP = count($product);
                                     ['/sales/manager/view-report'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
-                                        'view_date_sales' => 'view_sales_today',
+                                        'date_sales' => 'sales_today',
                                     ],
                                     'class' => ['btn btn-primary '.$salestoday],
                                 ]) ?>
@@ -121,7 +127,7 @@ $countP = count($product);
                                     ['/sales/manager/view-report'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
-                                        'view_date_sales' => 'view_sales_week',
+                                        'date_sales' => 'sales_week',
                                     ],
                                     'class' => ['btn btn-primary '.$salesweek],
                                 ]) ?>
@@ -129,7 +135,7 @@ $countP = count($product);
                                     ['/sales/manager/view-report'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
-                                        'view_date_sales' => 'view_sales_month',
+                                        'date_sales' => 'sales_month',
                                     ],
                                     'class' => ['btn btn-primary '.$salesmonth],
                                 ]) ?>
@@ -137,7 +143,7 @@ $countP = count($product);
                                     ['/sales/manager/view-report'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
-                                        'view_date_sales' => 'view_sales_all',
+                                        'date_sales' => 'sales_all',
                                     ],
                                     'class' => ['btn btn-primary '.$salesall],
                                 ]) ?>

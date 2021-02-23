@@ -38,6 +38,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 <table id="in_out_record" class="table table-sm table-condensed table-bordered">
                 <!--<table id="in_out_record" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">-->
                     <thead>
+                        <tr class="bg-primary">
+                            <th colspan="10">My Sales</th>
+                        </tr>
                         <tr class="bg-info">
                             <th colspan="10">
                                 <?php
@@ -194,7 +197,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <?= Html::a('Export Sales', 
+                <?= Html::a('Export Sales Monitoring', 
                     [''], [
                     'data-method' => 'POST',
                     'data-params' => [
@@ -228,6 +231,168 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>';
                     echo '<label class="control-label pull-right text-center">Date Range</label>';
                 ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <table id="in_out_record" class="table table-sm table-condensed table-bordered">
+                <!--<table id="in_out_record" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">-->
+                    <thead>
+                        <tr class="bg-primary">
+                            <th colspan="10">Team Sales</th>
+                        </tr>
+                        <tr class="bg-info">
+                            <th colspan="10">
+                                <?php
+                                    if(isset($_POST['view_team_date_sales'])){
+                                        if($_POST['view_team_date_sales'] == 'view_team_sales_today'){
+                                            $teamsalestoday = 'btn-md active';
+                                            $teamsalesall = 'btn-md';
+                                            $teamsalesweek = 'btn-sm';
+                                            $teamsalesmonth = 'btn-sm';
+                                        }
+                                        if($_POST['view_team_date_sales'] == 'view_team_sales_all'){
+                                            $teamsalestoday = 'btn-md';
+                                            $teamsalesall = 'btn-md active';
+                                            $teamsalesweek = 'btn-sm';
+                                            $teamsalesmonth = 'btn-sm';
+                                        }
+                                        if($_POST['view_team_date_sales'] == 'view_team_sales_week'){
+                                            $teamsalestoday = 'btn-sm';
+                                            $teamsalesall = 'btn-sm';
+                                            $teamsalesweek = 'btn-md active';
+                                            $teamsalesmonth = 'btn-sm';
+                                        }
+                                        if($_POST['view_team_date_sales'] == 'view_team_sales_month'){
+                                            $teamsalestoday = 'btn-sm';
+                                            $teamsalesall = 'btn-sm';
+                                            $teamsalesweek = 'btn-sm';
+                                            $teamsalesmonth = 'btn-md active';
+                                        }
+                                    } else {
+                                        $teamsalestoday = 'btn-md active';
+                                        $teamsalesall = 'btn-sm';
+                                        $teamsalesweek = 'btn-sm';
+                                        $teamsalesmonth = 'btn-sm';
+                                    }
+                                ?>
+                                <?= Html::a('Today', 
+                                    ['/sales/leader/view-sales'], [
+                                    'data-method' => 'POST',
+                                    'data-params' => [
+                                        'view_team_date_sales' => 'view_team_sales_today',
+                                    ],
+                                    'class' => ['btn btn-primary '.$teamsalestoday],
+                                ]) ?>
+                                <?= Html::a('This Week', 
+                                    ['/sales/leader/view-sales'], [
+                                    'data-method' => 'POST',
+                                    'data-params' => [
+                                        'view_team_date_sales' => 'view_team_sales_week',
+                                    ],
+                                    'class' => ['btn btn-primary '.$teamsalesweek],
+                                ]) ?>
+                                <?= Html::a('This Month', 
+                                    ['/sales/leader/view-sales'], [
+                                    'data-method' => 'POST',
+                                    'data-params' => [
+                                        'view_team_date_sales' => 'view_team_sales_month',
+                                    ],
+                                    'class' => ['btn btn-primary '.$teamsalesmonth],
+                                ]) ?>
+                                <?= Html::a('All', 
+                                    ['/sales/leader/view-sales'], [
+                                    'data-method' => 'POST',
+                                    'data-params' => [
+                                        'view_team_date_sales' => 'view_team_sales_all',
+                                    ],
+                                    'class' => ['btn btn-primary '.$teamsalesall],
+                                ]) ?>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th colspan="3">
+                                <div class="form-group row">
+                                    <!--<label for="search" class="col-sm-2 col-form-label"><i class="fa fa-search" aria-hidden="true"></i></label>-->
+                                    <div class="col-sm-10">
+                                        <input type="search" class="form-control" id="search" placeholder="Search...">
+                                    </div>
+                                </div>
+                            </th>
+                            <th colspan="7"></th>
+                        </tr>
+                        <tr>
+                            <th class="text-center" width="2%">#</th>
+                            <th class="text-center" width="11%">Date</th>
+                            <th class="text-center" width="15%">Products</th>
+                            <th class="text-center" width="5%">Qty</th>
+                            <th class="text-center" width="8%">Add-ons</th>
+                            <th class="text-center" width="10%">Price</th>
+                            <th class="text-center" width="15%">Name</th>
+                            <th class="text-center" width="12%">Status</th>
+                            <th class="text-center" width="12%">Log Status</th>
+                            <th class="text-center" width="12%">Del. Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        <?php
+                            $totalqty = 0;
+                            $totalprice = 0;
+                            if(count($teamsales) == 0){
+                                echo "<tr><td colspan='8'>No Record(s)</td></tr>";
+                            } else {
+                                foreach($teamsales as $key=>$value){
+                                    $status = SalesStatus::find()->where(['id'=>$value->sales_status_id])->one();
+                                    $customer = Customer::find()->where(['id'=>$value->customer_id])->one();
+                                    $customerName = $customer->customer_firstname.' '.$customer->customer_lastname;
+                                    //$product = Product::find()->where(['IN', 'id', json_decode($value->product_id)])->all();
+                                    $productSales = SalesProduct::find()->where(['sales_online_id'=>$value->id])->all();
+                                    $productId = array();
+                                    foreach($productSales as $item){
+                                        array_push($productId, $item->product_id);
+                                    }
+                                    $product = Product::find()->where(['IN', 'id', $productId])->all();
+                                    echo "<tr>
+                                        <td class='text-center'>".($key+1)."</td>
+                                        <td class='text-center'>".date('Y-m-d', strtotime($value->date_created))."</td>
+                                        <td>";
+                                        foreach($product as $p){
+                                            echo $p->product_name.'<br>';
+                                        }
+                                        echo "</td>
+                                        <td>";
+                                        foreach($productSales as $q){
+                                            echo $q->quantity.'<br>';
+                                            $totalqty += (int)$q->quantity;
+                                        }
+                                        echo "</td>
+                                        <td></td>
+                                        <td>";
+                                        foreach($productSales as $a){
+                                            echo number_format($a->collectible_amount, 2, '.', ',').'<br>';
+                                            $totalprice += (int)$a->collectible_amount;
+                                        }
+                                        echo "</td>
+                                        <td>".$customerName."</td>
+                                        <td>".$status->sales_status_name."</td>
+                                        <td>".$value->dispatcher_remark."</td>
+                                        <td>".$value->dispatcher_remark."</td>
+                                    </tr>";
+                                }
+                            }
+                        ?>
+                    </tbody>
+                    <tfoot class="text-center">
+                        <td colspan="3"><strong>TOTAL</strong></td>
+                        <td><strong><?= $totalqty; ?></strong></td>
+                        <td></td>
+                        <td><strong><?= number_format($totalprice, 2, '.', ','); ?></strong></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tfoot>
+                </table>
             </div>
         </div>
     </div>

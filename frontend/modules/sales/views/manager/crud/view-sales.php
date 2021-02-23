@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
 
 $this->title = 'OSR';
 //$this->params['breadcrumbs'][] = $this->title;
-$context = 'Sales';
+$context = 'Sales Monitoring';
 $this->params['breadcrumbs'][] = ['label' => 'Sales Onlines', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -35,6 +35,12 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="row">
             <div class="col-sm-12">
+                <div class="col-sm-md-6 form-group pull-left">
+                    <!--<label for="employee-id" class="col-sm-2 col-form-label"><h5><strong>Leader</strong></h5></label>-->
+                    <?php $form = ActiveForm::begin(); ?>
+                    <?= $form->field($model, 'id')->dropDownList($leader, ['prompt'=>'Select Leader', 'class' => 'col-sm-10 form-control form-control-sm', 'onchange' => 'getDetails(0);'])->label('Leader'); ?>
+                    <?php ActiveForm::end(); ?>
+                </div>
                 <?= Html::a('Export Sales', 
                     [''], [
                     'data-method' => 'POST',

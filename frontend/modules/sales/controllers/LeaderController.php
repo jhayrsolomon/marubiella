@@ -163,9 +163,36 @@ class LeaderController extends Controller
             $today = date('Y-m-d');
             $sales = SalesOnline::find()->where(['employee_id' => $employee->id, 'date_created' => $today])->all();
         }
+        if(isset($_POST['view_team_date_sales'])){
+            if($_POST['view_team_date_sales'] == 'view_team_sales_today'){
+                $today = date('Y-m-d');
+                $teamsales = SalesOnline::find()->where(['employee_id' => $employee->id, 'date_created' => $today])->all();
+            }
+            if($_POST['view_team_date_sales'] == 'view_team_sales_week'){
+                $d = date('d',strtotime('last Monday'));
+                $end_Date = date_format(date_create(date('Y-m-').($d+6)), 'Y-m-d');
+                $start_Date = date('Y-m-d',strtotime('last Monday'));
+                
+                $teamsales = SalesOnline::find()->where(['employee_id' => $employee->id])->andWhere(['between', 'date_created', $start_Date, $end_Date])->all();
+            }
+            if($_POST['view_team_date_sales'] == 'view_team_sales_month'){
+                $start_Date = date_format(date_create(date('Y-m-').'1'), 'Y-m-d');
+                $end_Date = date('Y-m-t');
+                
+                $teamsales = SalesOnline::find()->where(['employee_id' => $employee->id])->andWhere(['between', 'date_created', $start_Date, $end_Date])->all();
+            }
+            if($_POST['view_team_date_sales'] == 'view_team_sales_all'){
+                $teamsales = SalesOnline::find()->where(['employee_id' => $employee->id])->all();
+            }
+            //SELECT product_id, SUM(quantity) FROM sales_product GROUP BY product_id, from_unixtime( UNIX_TIMESTAMP(date_created), '%Y-%m-%d') ORDER BY from_unixtime( UNIX_TIMESTAMP(date_created), '%Y-%m-%d'), product_id ASC
+        } else {
+            $today = date('Y-m-d');
+            $teamsales = SalesOnline::find()->where(['employee_id' => $employee->id, 'date_created' => $today])->all();
+        }
         
         return $this->render('crud/view-sales', [
             'sales' => $sales,
+            'teamsales' => $teamsales,
             'employee' => $employee,
         ]);
     }

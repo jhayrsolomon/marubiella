@@ -185,7 +185,7 @@ $countP = count($product);
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <?= Html::a('Export Report', 
+                <?= Html::a('Export Sales Report', 
                     [''], [
                     'data-method' => 'POST',
                     'data-params' => [

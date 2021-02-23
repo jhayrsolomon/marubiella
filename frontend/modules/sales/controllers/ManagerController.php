@@ -18,6 +18,7 @@ use frontend\modules\models\Employee;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * ManagerController implements the CRUD actions for SalesOnline model.
@@ -58,7 +59,15 @@ class ManagerController extends Controller
     {
         $user_id = Yii::$app->user->identity->id;
         $employee = Employee::find()->where(['user_id'=>$user_id])->one();
+        $model = new Employee();
         
+        //SELECT employee.id, concat(employee.firstname, ' ', employee.lastname) as fullname FROM `employee` INNER JOIN employee_affiliation ON employee.employee_affiliation_id = employee_affiliation.id WHERE employee_affiliation.employment_designation_id = 3
+        $leader = ArrayHelper::map(
+            Yii::$app->marubiella->createCommand('SELECT employee.id, concat(employee.firstname, " ", employee.lastname) as fullname FROM `employee` INNER JOIN employee_affiliation ON employee.employee_affiliation_id = employee_affiliation.id WHERE employee_affiliation.employment_designation_id = 1')
+            ->queryAll(),
+            'id', 
+            'fullname'
+        );
         if(isset($_POST['date_sales'])){
             if($_POST['date_sales'] == 'sales_all'){
                 //$sales = SalesOnline::find()->where(['employee_id'=>$employee->id])->all();
@@ -84,6 +93,8 @@ class ManagerController extends Controller
         return $this->render('crud/view-report', [
             'sales' => $sales,
             'employee' => $employee,
+            'leader' => $leader,
+            'model' => $model,
         ]);
     }
     
@@ -91,6 +102,20 @@ class ManagerController extends Controller
     {
         $user_id = Yii::$app->user->identity->id;
         $employee = Employee::find()->where(['user_id'=>$user_id])->one();
+        
+        $model = new Employee();
+        
+        //SELECT employee.id, concat(employee.firstname, ' ', employee.lastname) as fullname FROM `employee` INNER JOIN employee_affiliation ON employee.employee_affiliation_id = employee_affiliation.id WHERE employee_affiliation.employment_designation_id = 3
+        $leader = ArrayHelper::map(
+            Yii::$app->marubiella->createCommand('SELECT employee.id, concat(employee.firstname, " ", employee.lastname) as fullname FROM `employee` INNER JOIN employee_affiliation ON employee.employee_affiliation_id = employee_affiliation.id WHERE employee_affiliation.employment_designation_id = 1')->queryAll(),/*Employee::find()
+                ->select('employee.id, concat(employee.firstname, " ", employee.lastname) as fullname')
+                ->innerJoinWith('employee_affiliation',' employee_affiliation.id= employee.employee_affiliation_id')
+                ->where(['employee_affiliation.employment_designation_id'=>'3'])
+                ->asArray() // <- this
+                ->all(), */
+            'id', 
+            'fullname'
+        );
         
         if(isset($_POST['view_date_sales'])){
             if($_POST['view_date_sales'] == 'view_sales_today'){
@@ -122,6 +147,8 @@ class ManagerController extends Controller
         return $this->render('crud/view-sales', [
             'sales' => $sales,
             'employee' => $employee,
+            'leader' => $leader,
+            'model' => $model,
         ]);
     }
 
