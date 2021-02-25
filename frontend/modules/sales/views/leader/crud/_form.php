@@ -77,6 +77,18 @@ use yii\widgets\ActiveForm;
                     </div>
                 </div>
             </div>
+            <div class="col-md-12 col-sm-12">
+                <label for="contact">Contact Details</label>
+                <div class="col-md-12 col-sm-12" id="contact">
+
+                    <div class="col-md-4 col-sm-4">
+                        <?= $form->field($modelCustomer, 'cellphone_number')->textInput(['maxlength' => true, 'placeholder' => 'Cellphone Number', 'class' => 'form-control form-control-sm'])->label('Cellphone Number') ?>
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        <?= $form->field($modelCustomer, 'telephone_number')->textInput(['maxlength' => true, 'placeholder' => 'Telephone Number', 'class' => 'form-control form-control-sm'])->label('Telephone Number') ?>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="row">
             <label for="product">Product Details</label>

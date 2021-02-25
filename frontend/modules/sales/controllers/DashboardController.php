@@ -147,13 +147,26 @@ class DashboardController extends Controller
                 $message = 'You are already Timed '.$_POST['stat'];
                 return $message;
             } else {
-                
+                if($_POST['stat'] == 'in'){
+                    if(strtotime($_POST['timedate']) >= strtotime(date('H:i:s', mktime(8, 30, 0)))){
+                        $remarks = 'late';
+                    } else {
+                        $remarks  = 'On Time';
+                    }
+                } 
+                if($_POST['stat'] == 'out'){
+                    if(strtotime($_POST['timedate']) <= strtotime(date('H:i:s', mktime(17, 0, 0)))){
+                        $remarks = 'Undertime';
+                    } else {
+                        $remarks  = 'On Time';
+                    }
+                }
                 $model->user_id = $user_id;
                 $model->employee_id = $employee_id;
                 $model->today_date = date('Y-m-d');
                 $model->in_out = $_POST['stat'];
                 $model->time_report = $_POST['timedate'];
-                $model->remark = 'a';
+                $model->remark = $remarks;
                 $model->save();
                 $message = 'Successfully Timed '.$_POST['stat'];
                 return $message;

@@ -15,7 +15,7 @@ $this->title = 'Marubiella';
     <div class="row">
         <div class="col-lg-12" style="text-align: center !important;">
             <h1>
-                Accounting Module
+                Admin Module
             </h1>
         </div>
     </div>

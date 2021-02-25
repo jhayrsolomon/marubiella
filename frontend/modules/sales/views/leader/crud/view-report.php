@@ -8,7 +8,7 @@ use frontend\modules\models\Product;
 
 $this->title = 'OSR';
 //$this->params['breadcrumbs'][] = $this->title;
-$context = 'Report';
+$context = 'Sales Report';
 $this->params['breadcrumbs'][] = ['label' => 'Sales Onlines', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -45,12 +45,12 @@ $countP = count($product);
                                     if(isset($_POST['date_sales'])){
                                         if($_POST['date_sales'] == 'sales_today'){
                                             $salestoday = 'btn-md active';
-                                            $salesall = 'btn-md';
+                                            $salesall = 'btn-sm';
                                             $salesweek = 'btn-sm';
                                             $salesmonth = 'btn-sm';
                                         }
                                         if($_POST['date_sales'] == 'sales_all'){
-                                            $salestoday = 'btn-md';
+                                            $salestoday = 'btn-sm';
                                             $salesall = 'btn-md active';
                                             $salesweek = 'btn-sm';
                                             $salesmonth = 'btn-sm';
@@ -235,12 +235,12 @@ $countP = count($product);
                                     if(isset($_POST['team_date_sales'])){
                                         if($_POST['team_date_sales'] == 'team_sales_today'){
                                             $teamsalestoday = 'btn-md active';
-                                            $teamsalesall = 'btn-md';
+                                            $teamsalesall = 'btn-sm';
                                             $teamsalesweek = 'btn-sm';
                                             $teamsalesmonth = 'btn-sm';
                                         }
                                         if($_POST['team_date_sales'] == 'team_sales_all'){
-                                            $teamsalestoday = 'btn-md';
+                                            $teamsalestoday = 'btn-sm';
                                             $teamsalesall = 'btn-md active';
                                             $teamsalesweek = 'btn-sm';
                                             $teamsalesmonth = 'btn-sm';
@@ -310,13 +310,16 @@ $countP = count($product);
                             <th colspan="<?= ($countP-1); ?>"></th>
                         </tr>
                         <tr>
-                            <th>Date</th>
+                            <th width="10%">Name</th>
+                            <th width="10%">Date</th>
                             <?php
+                                $count = count($product);
+                                $width = (70/$count);
                                 foreach($product as $item){
-                                    echo "<th>".$item->product_name."</th>";
+                                    echo "<th width='".$width."'>".$item->product_name."</th>";
                                 }
                             ?>
-                            <th>Total</th>
+                            <th width="10%">Total</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -330,6 +333,7 @@ $countP = count($product);
                                 $p = $s;
                                 $totalx = 0;
                                 echo "<tr>
+                                    <td>Name</td>
                                     <td>".$teamsales[$s]['pdate']."</td>";
                                 for($x=0; $x < $countP; $x++){
                                     if(isset($teamsales[$p]['pdate'])){
@@ -357,7 +361,7 @@ $countP = count($product);
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th><strong>Total</strong></th>
+                            <th colspan="2"><strong>Total</strong></th>
                             <?php
                                 for($x=0; $x<count($totaly); $x++){
                                     echo "<th><strong>".$totaly[$x]."</strong></th>";
@@ -366,7 +370,7 @@ $countP = count($product);
                             ?>
                         </tr>
                         <tr>
-                            <th colspan="<?= ($countP+1); ?>">Grand Total</th>
+                            <th colspan="<?= ($countP+2); ?>">Grand Total</th>
                             <th class="bg-info"><?= $totalAll; ?></th>
                         </tr>
                     </tfoot>

@@ -238,3 +238,8 @@ function addRowProduct(){
          }
     });
 }
+
+function getSalesId(id){
+    console.log(id);
+    $('#salesId').val(id);
+}

@@ -5,11 +5,12 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\models\SalesOnline */
 
-$this->title = 'Create Sales Online';
+$this->title = 'Update Sales Online: ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Sales Onlines', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="sales-online-create">
+<div class="sales-online-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

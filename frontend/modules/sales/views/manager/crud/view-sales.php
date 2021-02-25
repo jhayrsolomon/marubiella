@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
 
 $this->title = 'OSR';
 //$this->params['breadcrumbs'][] = $this->title;
-$context = 'Sales Monitoring';
+$context = 'Branch Sales Monitoring';
 $this->params['breadcrumbs'][] = ['label' => 'Sales Onlines', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -35,119 +35,78 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <div class="col-sm-md-6 form-group pull-left">
-                    <!--<label for="employee-id" class="col-sm-2 col-form-label"><h5><strong>Leader</strong></h5></label>-->
-                    <?php $form = ActiveForm::begin(); ?>
-                    <?= $form->field($model, 'id')->dropDownList($leader, ['prompt'=>'Select Leader', 'class' => 'col-sm-10 form-control form-control-sm', 'onchange' => 'getDetails(0);'])->label('Leader'); ?>
-                    <?php ActiveForm::end(); ?>
-                </div>
-                <?= Html::a('Export Sales', 
-                    [''], [
-                    'data-method' => 'POST',
-                    'data-params' => [
-                        'view_date_sales' => 'view_sales_week',
-                    ],
-                    'class' => ['btn btn-danger pull-right'],
-                ]) ?>
-
-                <?php
-                    echo '<div class="input-group drp-container pull-right">';
-                    echo DateRangePicker::widget([
-                        'name'=>'date_range_1',
-                        'value'=>date('01'.'-M-y').' to '.date('t-M-y'),
-                        'convertFormat'=>true,
-                        'useWithAddon'=>true,
-                        'pluginOptions'=>[
-                            'locale'=>[
-                                'format'=>'d-M-y',
-                                'separator'=>' to ',
-                            ],
-                            'opens'=>'left'
-                        ]
-                    ]);
-                    echo '</div>';
-                ?>
-                <?php 
-                    echo '<div class="input-group-append pull-right text-center">
-                        <span class="input-group-text">
-                            <i class="glyphicon glyphicon-calendar"></i>
-                        </span>
-                    </div>';
-                    echo '<label class="control-label pull-right text-center">Date Range</label>';
-                ?>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
                 <table id="in_out_record" class="table table-sm table-condensed table-bordered">
                 <!--<table id="in_out_record" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">-->
                     <thead>
+                        <tr class="bg-primary">
+                            <th colspan="10">My Sales</th>
+                        </tr>
                         <tr class="bg-info">
                             <th colspan="10">
                                 <?php
-                                    if(isset($_POST['view_date_sales'])){
-                                        if($_POST['view_date_sales'] == 'view_sales_today'){
-                                            $salestoday = 'btn-md active';
-                                            $salesall = 'btn-md';
-                                            $salesweek = 'btn-sm';
-                                            $salesmonth = 'btn-sm';
+                                    if(isset($_POST['my_date_sales'])){
+                                        if($_POST['my_date_sales'] == 'my_sales_today'){
+                                            $mysalestoday = 'btn-md active';
+                                            $mysalesall = 'btn-md';
+                                            $mysalesweek = 'btn-sm';
+                                            $mysalesmonth = 'btn-sm';
                                         }
-                                        if($_POST['view_date_sales'] == 'view_sales_all'){
-                                            $salestoday = 'btn-md';
-                                            $salesall = 'btn-md active';
-                                            $salesweek = 'btn-sm';
-                                            $salesmonth = 'btn-sm';
+                                        if($_POST['my_date_sales'] == 'my_sales_all'){
+                                            $mysalestoday = 'btn-md';
+                                            $mysalesall = 'btn-md active';
+                                            $mysalesweek = 'btn-sm';
+                                            $mysalesmonth = 'btn-sm';
                                         }
-                                        if($_POST['view_date_sales'] == 'view_sales_week'){
-                                            $salestoday = 'btn-sm';
-                                            $salesall = 'btn-sm';
-                                            $salesweek = 'btn-md active';
-                                            $salesmonth = 'btn-sm';
+                                        if($_POST['my_date_sales'] == 'my_sales_week'){
+                                            $mysalestoday = 'btn-sm';
+                                            $mysalesall = 'btn-sm';
+                                            $mysalesweek = 'btn-md active';
+                                            $mysalesmonth = 'btn-sm';
                                         }
-                                        if($_POST['view_date_sales'] == 'view_sales_month'){
-                                            $salestoday = 'btn-sm';
-                                            $salesall = 'btn-sm';
-                                            $salesweek = 'btn-sm';
-                                            $salesmonth = 'btn-md active';
+                                        if($_POST['my_date_sales'] == 'my_sales_month'){
+                                            $mysalestoday = 'btn-sm';
+                                            $mysalesall = 'btn-sm';
+                                            $mysalesweek = 'btn-sm';
+                                            $mysalesmonth = 'btn-md active';
                                         }
                                     } else {
-                                        $salestoday = 'btn-md active';
-                                        $salesall = 'btn-sm';
-                                        $salesweek = 'btn-sm';
-                                        $salesmonth = 'btn-sm';
+                                        $mysalestoday = 'btn-md active';
+                                        $mysalesall = 'btn-sm';
+                                        $mysalesweek = 'btn-sm';
+                                        $mysalesmonth = 'btn-sm';
                                     }
                                 ?>
                                 <?= Html::a('Today', 
                                     ['/sales/manager/view-sales'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
-                                        'view_date_sales' => 'view_sales_today',
+                                        'my_date_sales' => 'my_sales_today',
                                     ],
-                                    'class' => ['btn btn-primary '.$salestoday],
+                                    'class' => ['btn btn-primary '.$mysalestoday],
                                 ]) ?>
                                 <?= Html::a('This Week', 
                                     ['/sales/manager/view-sales'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
-                                        'view_date_sales' => 'view_sales_week',
+                                        'my_date_sales' => 'my_sales_week',
                                     ],
-                                    'class' => ['btn btn-primary '.$salesweek],
+                                    'class' => ['btn btn-primary '.$mysalesweek],
                                 ]) ?>
                                 <?= Html::a('This Month', 
                                     ['/sales/manager/view-sales'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
-                                        'view_date_sales' => 'view_sales_month',
+                                        'my_date_sales' => 'my_sales_month',
                                     ],
-                                    'class' => ['btn btn-primary '.$salesmonth],
+                                    'class' => ['btn btn-primary '.$mysalesmonth],
                                 ]) ?>
                                 <?= Html::a('All', 
                                     ['/sales/manager/view-sales'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
-                                        'view_date_sales' => 'view_sales_all',
+                                        'my_date_sales' => 'my_sales_all',
                                     ],
-                                    'class' => ['btn btn-primary '.$salesall],
+                                    'class' => ['btn btn-primary '.$mysalesall],
                                 ]) ?>
                             </th>
                         </tr>
@@ -173,6 +132,223 @@ $this->params['breadcrumbs'][] = $this->title;
                             <th class="text-center" width="12%">Status</th>
                             <th class="text-center" width="12%">Log Status</th>
                             <th class="text-center" width="12%">Del. Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        <?php
+                            $totalqty = 0;
+                            $totalprice = 0;
+                            if(count($mySales) == 0){
+                                echo "<tr><td colspan='8'>No Record(s)</td></tr>";
+                            } else {
+                                foreach($mySales as $key=>$value){
+                                    $status = SalesStatus::find()->where(['id'=>$value->sales_status_id])->one();
+                                    $customer = Customer::find()->where(['id'=>$value->customer_id])->one();
+                                    $customerName = $customer->customer_firstname.' '.$customer->customer_lastname;
+                                    //$product = Product::find()->where(['IN', 'id', json_decode($value->product_id)])->all();
+                                    $productSales = SalesProduct::find()->where(['sales_online_id'=>$value->id])->all();
+                                    $productId = array();
+                                    foreach($productSales as $item){
+                                        array_push($productId, $item->product_id);
+                                    }
+                                    $product = Product::find()->where(['IN', 'id', $productId])->all();
+                                    echo "<tr>
+                                        <td class='text-center'>".($key+1)."</td>
+                                        <td class='text-center'>".date('Y-m-d', strtotime($value->date_created))."</td>
+                                        <td>";
+                                        foreach($product as $p){
+                                            echo $p->product_name.'<br>';
+                                        }
+                                        echo "</td>
+                                        <td>";
+                                        foreach($productSales as $q){
+                                            echo $q->quantity.'<br>';
+                                            $totalqty += (int)$q->quantity;
+                                        }
+                                        echo "</td>
+                                        <td></td>
+                                        <td>";
+                                        foreach($productSales as $a){
+                                            echo number_format($a->collectible_amount, 2, '.', ',').'<br>';
+                                            $totalprice += (int)$a->collectible_amount;
+                                        }
+                                        echo "</td>
+                                        <td>".$customerName."</td>
+                                        <td>".$status->sales_status_name."</td>
+                                        <td>".$value->dispatcher_remark."</td>
+                                        <td>".$value->dispatcher_remark."</td>
+                                    </tr>";
+                                }
+                            }
+                        ?>
+                    </tbody>
+                    <tfoot class="text-center">
+                        <td colspan="3"><strong>TOTAL</strong></td>
+                        <td><strong><?= $totalqty; ?></strong></td>
+                        <td></td>
+                        <td><strong><?= number_format($totalprice, 2, '.', ','); ?></strong></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <!--<div class="row">
+            <div class="col-sm-12">
+                
+            </div>
+        </div>-->
+        <div class="row">
+            <div class="col-sm-12">
+                <table id="in_out_record" class="table table-sm table-condensed table-bordered">
+                <!--<table id="in_out_record" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">-->
+                    <thead>
+                        <tr class="bg-primary">
+                            <th colspan="10">Branch Sales</th>
+                        </tr>
+                        <tr class="bg-info">
+                            <th colspan="10">
+                                <div class="col-sm-6 col-md-6 form-group pull-left">
+                                    <!--<label for="employee-id" class="col-sm-2 col-form-label"><h5><strong>Leader</strong></h5></label>-->
+                                    <?php $form = ActiveForm::begin(); ?>
+                                    <?= $form->field($model, 'id')->dropDownList($leader, ['prompt'=>'Select Leader', 'class' => 'col-sm-10 form-control form-control-sm', 'onchange' => 'getDetails(0);'])->label('Leader'); ?>
+                                    <?php ActiveForm::end(); ?>
+                                </div>
+                                <div class="col-sm-6 col-md-6 form-group">
+                                    <div class="col-sm-12 col-md-12 ">
+                                        <?php 
+                                            echo '<label class="control-label pull-left">Date Range</label>';
+                                            echo '<div class="input-group-append pull-left">
+                                                <span class="input-group-text">
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                                </span>
+                                            </div>';
+                                        ?>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 ">
+                                        <?php
+                                            echo '<div class="col-sm-9 col-md-9 input-group drp-container pull-left">';
+                                            echo DateRangePicker::widget([
+                                                'name'=>'date_range_1',
+                                                'value'=>date('01'.'-M-y').' to '.date('t-M-y'),
+                                                'convertFormat'=>true,
+                                                'useWithAddon'=>true,
+                                                'pluginOptions'=>[
+                                                    'locale'=>[
+                                                        'format'=>'d-M-y',
+                                                        'separator'=>' to ',
+                                                    ],
+                                                    'opens'=>'left',
+                                                    'class'=>'pull-left'
+                                                ],
+                                            ]);
+                                            echo '</div>';
+                                        ?>
+                                        <?= Html::a('Export Sales', 
+                                            [''], [
+                                            'data-method' => 'POST',
+                                            'data-params' => [
+                                                'view_date_sales' => 'view_sales_week',
+                                            ],
+                                            'class' => ['col-sm-3 col-md-3 btn btn-danger pull-left'],
+                                        ]) ?>
+                                    </div>                    
+                                </div>
+                            </th>
+                        </tr>
+                        <tr class="bg-info">
+                            <th colspan="10">
+                                <?php
+                                    if(isset($_POST['team_date_sales'])){
+                                        if($_POST['team_date_sales'] == 'team_sales_today'){
+                                            $salestoday = 'btn-md active';
+                                            $salesall = 'btn-md';
+                                            $salesweek = 'btn-sm';
+                                            $salesmonth = 'btn-sm';
+                                        }
+                                        if($_POST['team_date_sales'] == 'team_sales_all'){
+                                            $salestoday = 'btn-md';
+                                            $salesall = 'btn-md active';
+                                            $salesweek = 'btn-sm';
+                                            $salesmonth = 'btn-sm';
+                                        }
+                                        if($_POST['team_date_sales'] == 'team_sales_week'){
+                                            $salestoday = 'btn-sm';
+                                            $salesall = 'btn-sm';
+                                            $salesweek = 'btn-md active';
+                                            $salesmonth = 'btn-sm';
+                                        }
+                                        if($_POST['team_date_sales'] == 'team_sales_month'){
+                                            $salestoday = 'btn-sm';
+                                            $salesall = 'btn-sm';
+                                            $salesweek = 'btn-sm';
+                                            $salesmonth = 'btn-md active';
+                                        }
+                                    } else {
+                                        $salestoday = 'btn-md active';
+                                        $salesall = 'btn-sm';
+                                        $salesweek = 'btn-sm';
+                                        $salesmonth = 'btn-sm';
+                                    }
+                                ?>
+                                <?= Html::a('Today', 
+                                    ['/sales/manager/view-sales'], [
+                                    'data-method' => 'POST',
+                                    'data-params' => [
+                                        'team_date_sales' => 'team_sales_today',
+                                    ],
+                                    'class' => ['btn btn-primary '.$salestoday],
+                                ]) ?>
+                                <?= Html::a('This Week', 
+                                    ['/sales/manager/view-sales'], [
+                                    'data-method' => 'POST',
+                                    'data-params' => [
+                                        'team_date_sales' => 'team_sales_week',
+                                    ],
+                                    'class' => ['btn btn-primary '.$salesweek],
+                                ]) ?>
+                                <?= Html::a('This Month', 
+                                    ['/sales/manager/view-sales'], [
+                                    'data-method' => 'POST',
+                                    'data-params' => [
+                                        'team_date_sales' => 'team_sales_month',
+                                    ],
+                                    'class' => ['btn btn-primary '.$salesmonth],
+                                ]) ?>
+                                <?= Html::a('All', 
+                                    ['/sales/manager/view-sales'], [
+                                    'data-method' => 'POST',
+                                    'data-params' => [
+                                        'team_date_sales' => 'team_sales_all',
+                                    ],
+                                    'class' => ['btn btn-primary '.$salesall],
+                                ]) ?>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th colspan="3">
+                                <div class="form-group row">
+                                    <!--<label for="search" class="col-sm-2 col-form-label"><i class="fa fa-search" aria-hidden="true"></i></label>-->
+                                    <div class="col-sm-10">
+                                        <input type="search" class="form-control" id="search" placeholder="Search...">
+                                    </div>
+                                </div>
+                            </th>
+                            <th colspan="7"></th>
+                        </tr>
+                        <tr>
+                            <th class="text-center" width="11%">Team</th>
+                            <th class="text-center" width="10%">Date</th>
+                            <th class="text-center" width="13%">Products</th>
+                            <th class="text-center" width="5%">Qty</th>
+                            <th class="text-center" width="8%">Add-ons</th>
+                            <th class="text-center" width="8%">Price</th>
+                            <th class="text-center" width="15%">Name</th>
+                            <th class="text-center" width="10%">Status</th>
+                            <th class="text-center" width="10%">Log Status</th>
+                            <th class="text-center" width="10%">Del. Status</th>
                         </tr>
                     </thead>
                     <tbody class="text-center">

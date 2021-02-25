@@ -115,7 +115,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     }
                                 ?>
                                 <?= Html::a('Today', 
-                                    ['/sales/osr/view-sales'], [
+                                    ['/sales/csr/view-sales'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
                                         'view_date_sales' => 'view_sales_today',
@@ -123,7 +123,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'class' => ['btn btn-primary '.$salestoday],
                                 ]) ?>
                                 <?= Html::a('This Week', 
-                                    ['/sales/osr/view-sales'], [
+                                    ['/sales/csr/view-sales'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
                                         'view_date_sales' => 'view_sales_week',
@@ -131,7 +131,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'class' => ['btn btn-primary '.$salesweek],
                                 ]) ?>
                                 <?= Html::a('This Month', 
-                                    ['/sales/osr/view-sales'], [
+                                    ['/sales/csr/view-sales'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
                                         'view_date_sales' => 'view_sales_month',
@@ -139,7 +139,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'class' => ['btn btn-primary '.$salesmonth],
                                 ]) ?>
                                 <?= Html::a('All', 
-                                    ['/sales/osr/view-sales'], [
+                                    ['/sales/csr/view-sales'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
                                         'view_date_sales' => 'view_sales_all',

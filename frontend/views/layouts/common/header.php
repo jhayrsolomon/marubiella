@@ -2,6 +2,8 @@
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
+
+$navCss = 'active';
 ?>
 <header class="main-header">
     <!--<a class="logo-sm" href="#" role="button" ><img src="?= Yii::$app->request->baseUrl?>/images/onelab.png" alt="OneLab Logo" width="5%"></a>-->
@@ -34,23 +36,35 @@ use yii\bootstrap\NavBar;
                         ],*/
                         [
                             'label' => 'Administration',
-                            'url' => ['/administration'],
+                            'url' => ['/administration/dashboard'],
                             'visible' => Yii::$app->user->can('development'),
+                            'options' => [
+                                'class' => [(Yii::$app->controller->module->id == 'administration')?$navCss:'',],
+                            ],
                         ],
                         [
                             'label' => 'Accounting',
-                            'url' => ['/accounting'],
+                            'url' => ['/accounting/dashboard'],
                             'visible' => Yii::$app->user->can('development'),
+                            'options' => [
+                                'class' => [(Yii::$app->controller->module->id == 'accounting')?$navCss:'',],
+                            ],
                         ],
                         [
                             'label' => 'Sales',
-                            'url' => ['/sales'],
+                            'url' => ['/sales/dashboard'],
                             'visible' => Yii::$app->user->can('development'),
+                            'options' => [
+                                'class' => [(Yii::$app->controller->module->id == 'sales')?$navCss:'',],
+                            ],
                         ],
                         [
                             'label' => 'Products',
-                            'url' => ['/products'],
+                            'url' => ['/products/dashboard'],
                             'visible' => Yii::$app->user->can('development'),
+                            'options' => [
+                                'class' => [(Yii::$app->controller->module->id == 'products')?$navCss:'',],
+                            ],
                         ],
                         /*[
                             'label' => 'Agency',

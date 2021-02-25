@@ -18,6 +18,7 @@ use frontend\modules\models\EmployeeAddress;
 use frontend\modules\models\EmployeeAffiliation;
 use frontend\modules\models\EmploymentDesignation;
 use frontend\modules\models\EmploymentStatus;
+//use frontend\modules\models\EmployeeDailyTimeRecordSearch;
 
 /**
  * EmployeeController implements the CRUD actions for Employee model.
@@ -197,8 +198,12 @@ class EmployeeController extends Controller
     
     public function actionAttendance()
     {
+        $searchModel = new EmployeeSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
         return $this->render('attendance', [
-            'model' => 'Attendance',
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
         ]);
     }
     

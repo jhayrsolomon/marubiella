@@ -21,9 +21,9 @@ use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 
 /**
- * JuniorLeaderController implements the CRUD actions for SalesOnline model.
+ * EncoderController implements the CRUD actions for SalesOnline model.
  */
-class JuniorLeaderController extends Controller
+class EncoderController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -63,9 +63,14 @@ class JuniorLeaderController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->render('crud/view', [
             'model' => $this->findModel($id),
         ]);
+    }
+    
+    public function actionLogistics()
+    {
+        return $this->render('logistics');
     }
     
     public function actionViewReport()
@@ -141,12 +146,7 @@ class JuniorLeaderController extends Controller
             'employee' => $employee,
         ]);
     }
-
-    /**
-     * Creates a new SalesOnline model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
+    
     public function actionAddSales()
     {
         $model = new SalesOnline();
@@ -247,7 +247,7 @@ class JuniorLeaderController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    /*public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
@@ -258,7 +258,7 @@ class JuniorLeaderController extends Controller
         return $this->render('update', [
             'model' => $model,
         ]);
-    }
+    }*/
 
     /**
      * Deletes an existing SalesOnline model.
@@ -267,12 +267,12 @@ class JuniorLeaderController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    /*public function actionDelete($id)
     {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
-    }
+    }*/
 
     /**
      * Finds the SalesOnline model based on its primary key value.

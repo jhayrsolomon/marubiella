@@ -74,18 +74,21 @@ $countP = count($product);
                 <table id="in_out_record" class="table table-sm table-condensed table-bordered">
                 <!--<table id="in_out_record" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">-->
                     <thead>
+                        <tr class="bg-primary">
+                            <th colspan="<?= ($countP+2); ?>">My Sales</th>
+                        </tr>
                         <tr class="bg-info">
                             <th colspan="<?= ($countP+2); ?>">
                                 <?php
                                     if(isset($_POST['date_sales'])){
                                         if($_POST['date_sales'] == 'sales_today'){
                                             $salestoday = 'btn-md active';
-                                            $salesall = 'btn-md';
+                                            $salesall = 'btn-sm';
                                             $salesweek = 'btn-sm';
                                             $salesmonth = 'btn-sm';
                                         }
                                         if($_POST['date_sales'] == 'sales_all'){
-                                            $salestoday = 'btn-md';
+                                            $salestoday = 'btn-sm';
                                             $salesall = 'btn-md active';
                                             $salesweek = 'btn-sm';
                                             $salesmonth = 'btn-sm';

@@ -110,11 +110,11 @@ $actionCss = 'active';
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <!--<li class="?= (Yii::$app->controller->id == 'manager' && Yii::$app->controller->action->id == 'add-sales')?$actionCss:''; ?>">
-                        <a href="?php echo Url::base(true).'/sales/manager/add-sales';?>">
+                    <li class="<?= (Yii::$app->controller->id == 'manager' && Yii::$app->controller->action->id == 'add-sales')?$actionCss:''; ?>">
+                        <a href="<?php echo Url::base(true).'/sales/manager/add-sales';?>">
                             <i class="fa fa-address-card-o" aria-hidden="true"></i> <span>Add Sales</span>
                         </a>
-                    </li>-->
+                    </li>
                     <li class="<?= (Yii::$app->controller->id == 'manager' && Yii::$app->controller->action->id == 'view-sales')?$actionCss:''; ?>">
                         <a href="<?php echo Url::base(true).'/sales/manager/view-sales';?>">
                             <i class="fa fa-bar-chart" aria-hidden="true"></i> <span>Sales Monitoring</span>
@@ -127,11 +127,71 @@ $actionCss = 'active';
                     </li>
                 </ul>
             </li>
-            <li class="<?= (Yii::$app->controller->id == 'csr')?$actionCss:''; ?>">
-                <a href="<?php echo Url::base(true).'/sales/csr';?>">
+            <li class="treeview <?= (Yii::$app->controller->id == 'csr')?$controllerCss:''; ?>">
+                <a href="#">
+                    <i class="fa fa-users"></i> <span>CSR</span>
+                    <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="<?= (Yii::$app->controller->id == 'csr' && Yii::$app->controller->action->id == 'verify-sales')?$actionCss:''; ?>">
+                        <a href="<?php echo Url::base(true).'/sales/csr/verify-sales';?>">
+                            <i class="fa fa-address-card-o" aria-hidden="true"></i> <span>Verify Sales</span>
+                        </a>
+                    </li>
+                    <li class="<?= (Yii::$app->controller->id == 'csr' && Yii::$app->controller->action->id == 'add-sales')?$actionCss:''; ?>">
+                        <a href="<?php echo Url::base(true).'/sales/csr/add-sales';?>">
+                            <i class="fa fa-address-card-o" aria-hidden="true"></i> <span>Add Sales</span>
+                        </a>
+                    </li>
+                    <li class="<?= (Yii::$app->controller->id == 'csr' && Yii::$app->controller->action->id == 'view-sales')?$actionCss:''; ?>">
+                        <a href="<?php echo Url::base(true).'/sales/csr/view-sales';?>">
+                            <i class="fa fa-bar-chart" aria-hidden="true"></i> <span>Sales Monitoring</span>
+                        </a>
+                    </li>
+                    <li class="<?= (Yii::$app->controller->id == 'csr' && Yii::$app->controller->action->id == 'view-report')?$actionCss:''; ?>">
+                        <a href="<?php echo Url::base(true).'/sales/csr/view-report';?>">
+                            <i class="fa fa-line-chart" aria-hidden="true"></i> <span>Sales Report</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="treeview <?= (Yii::$app->controller->id == 'encoder')?$controllerCss:''; ?>">
+                <a href="#">
+                    <i class="fa fa-users"></i> <span>Encoder</span>
+                    <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="<?= (Yii::$app->controller->id == 'encoder' && Yii::$app->controller->action->id == 'logistics')?$actionCss:''; ?>">
+                        <a href="<?php echo Url::base(true).'/sales/encoder/logistics';?>">
+                            <i class="fa fa-address-card-o" aria-hidden="true"></i> <span>Logistics</span>
+                        </a>
+                    </li>
+                    <li class="<?= (Yii::$app->controller->id == 'encoder' && Yii::$app->controller->action->id == 'add-sales')?$actionCss:''; ?>">
+                        <a href="<?php echo Url::base(true).'/sales/encoder/add-sales';?>">
+                            <i class="fa fa-address-card-o" aria-hidden="true"></i> <span>Add Sales</span>
+                        </a>
+                    </li>
+                    <li class="<?= (Yii::$app->controller->id == 'encoder' && Yii::$app->controller->action->id == 'view-sales')?$actionCss:''; ?>">
+                        <a href="<?php echo Url::base(true).'/sales/encoder/view-sales';?>">
+                            <i class="fa fa-bar-chart" aria-hidden="true"></i> <span>Sales Monitoring</span>
+                        </a>
+                    </li>
+                    <li class="<?= (Yii::$app->controller->id == 'encoder' && Yii::$app->controller->action->id == 'view-report')?$actionCss:''; ?>">
+                        <a href="<?php echo Url::base(true).'/sales/encoder/view-report';?>">
+                            <i class="fa fa-line-chart" aria-hidden="true"></i> <span>Sales Report</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <!--<li class="?= (Yii::$app->controller->id == 'csr')?$actionCss:''; ?>">
+                <a href="?php echo Url::base(true).'/sales/csr';?>">
                     <i class="fa fa-calendar" aria-hidden="true"></i> <span>CSR</span>
                 </a>
-            </li>
+            </li>-->
         </ul>
     </section>
 

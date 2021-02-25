@@ -2,6 +2,7 @@
 use yii\bootstrap\Nav;
 use yii\helpers\Url;
 
+$actionCss = 'active';
 ?>
 <aside class="main-sidebar">
 
@@ -21,7 +22,7 @@ use yii\helpers\Url;
 
         <ul class="sidebar-menu tree" data-widget="tree">
             <li class="header">Main Navigation</li>
-            <li>
+            <li class="<?= (Yii::$app->controller->id == 'dashboard')?$actionCss:''; ?>">
                 <a href="<?php echo Url::base(true).'/employee/dashboard';?>">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                 </a>

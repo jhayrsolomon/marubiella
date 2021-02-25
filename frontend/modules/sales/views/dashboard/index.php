@@ -35,7 +35,14 @@ $context = 'User Code';
         </div>
         <div class="row">
             <div class="col-sm-12 form-group">
-                <div class="col-sm-3">Time in:<input class="form-control input-sm" type="datetime" disabled value="<?= date('M d, Y'); ?>"></div>
+                <?php
+                    foreach($timeRecordIn as $in){
+                        if($in->today_date == date('Y-m-d')){
+                            $timeIn = $in->time_report;
+                        }
+                    }
+                ?>
+                <div class="col-sm-3">Time in:<input class="form-control input-sm" type="datetime" disabled value="<?= (isset($timeIn))?$timeIn:''; ?>"></div>
                 <div class="col-sm-3">Date<input class="form-control input-sm" type="datetime" disabled value="<?= date('M d, Y'); ?>"></div>
             </div>
         </div>
@@ -131,7 +138,19 @@ $context = 'User Code';
                                     echo "<tr>
                                         <td>".$value->today_date."</td>
                                         <td>".$value->time_report."</td>
-                                        <td>".((isset($timeRecordOut[$key]->time_report))?$timeRecordOut[$key]->time_report : '')."</td>
+                                        <td>";
+                                        /*if(isset($timeRecordOut[$key]->time_report)){
+                                            if($timeRecordOut[$key]->today_date == $value->today_date){
+                                                echo $timeRecordOut[$key]->time_report;
+                                            }
+                                        }*/
+                                        foreach($timeRecordOut as $out){
+                                            if($value->today_date == $out->today_date){
+                                                echo $out->time_report;
+                                            }
+                                        }
+                                    /*(isset($timeRecordOut[$key]->time_report) && (isset($timeRecordOut[$key]->today_date) == $value->today_date))?$timeRecordOut[$key]->time_report : ''.*/
+                                        echo "</td>
                                         <td>".$value->remark."<br>".((isset($timeRecordOut[$key]->remark))?$timeRecordOut[$key]->remark : '')."</td>
                                     </tr>";
                                 }

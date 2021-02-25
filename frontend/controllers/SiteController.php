@@ -97,7 +97,7 @@ class SiteController extends Controller
                 return $this->redirect(['/accounting']);
             }*/
             if (Yii::$app->user->can('development')) {
-                return $this->redirect(['/sales']);
+                return $this->redirect(['/sales/dashboard']);
             }
             return $this->goBack();
         } else {

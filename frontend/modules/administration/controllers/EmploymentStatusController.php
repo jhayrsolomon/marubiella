@@ -66,7 +66,7 @@ class EmploymentStatusController extends Controller
     {
         $model = new EmploymentStatus();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

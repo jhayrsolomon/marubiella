@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
 
 $this->title = 'OSR';
 //$this->params['breadcrumbs'][] = $this->title;
-$context = 'Sales';
+$context = 'Sales Monitoring';
 $this->params['breadcrumbs'][] = ['label' => 'Sales Onlines', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -47,12 +47,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                     if(isset($_POST['view_date_sales'])){
                                         if($_POST['view_date_sales'] == 'view_sales_today'){
                                             $salestoday = 'btn-md active';
-                                            $salesall = 'btn-md';
+                                            $salesall = 'btn-sm';
                                             $salesweek = 'btn-sm';
                                             $salesmonth = 'btn-sm';
                                         }
                                         if($_POST['view_date_sales'] == 'view_sales_all'){
-                                            $salestoday = 'btn-md';
+                                            $salestoday = 'btn-sm';
                                             $salesall = 'btn-md active';
                                             $salesweek = 'btn-sm';
                                             $salesmonth = 'btn-sm';
@@ -247,12 +247,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                     if(isset($_POST['view_team_date_sales'])){
                                         if($_POST['view_team_date_sales'] == 'view_team_sales_today'){
                                             $teamsalestoday = 'btn-md active';
-                                            $teamsalesall = 'btn-md';
+                                            $teamsalesall = 'btn-sm';
                                             $teamsalesweek = 'btn-sm';
                                             $teamsalesmonth = 'btn-sm';
                                         }
                                         if($_POST['view_team_date_sales'] == 'view_team_sales_all'){
-                                            $teamsalestoday = 'btn-md';
+                                            $teamsalestoday = 'btn-sm';
                                             $teamsalesall = 'btn-md active';
                                             $teamsalesweek = 'btn-sm';
                                             $teamsalesmonth = 'btn-sm';
@@ -322,16 +322,16 @@ $this->params['breadcrumbs'][] = $this->title;
                             <th colspan="7"></th>
                         </tr>
                         <tr>
-                            <th class="text-center" width="2%">#</th>
-                            <th class="text-center" width="11%">Date</th>
-                            <th class="text-center" width="15%">Products</th>
+                            <th class="text-center" width="11%">Name</th>
+                            <th class="text-center" width="8%">Date</th>
+                            <th class="text-center" width="13%">Products</th>
                             <th class="text-center" width="5%">Qty</th>
                             <th class="text-center" width="8%">Add-ons</th>
                             <th class="text-center" width="10%">Price</th>
                             <th class="text-center" width="15%">Name</th>
-                            <th class="text-center" width="12%">Status</th>
-                            <th class="text-center" width="12%">Log Status</th>
-                            <th class="text-center" width="12%">Del. Status</th>
+                            <th class="text-center" width="10%">Status</th>
+                            <th class="text-center" width="10%">Log Status</th>
+                            <th class="text-center" width="10%">Del. Status</th>
                         </tr>
                     </thead>
                     <tbody class="text-center">

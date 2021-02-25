@@ -76,18 +76,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 <table id="in_out_record" class="table table-sm table-condensed table-bordered">
                 <!--<table id="in_out_record" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">-->
                     <thead>
+                        <tr class="bg-primary">
+                            <th colspan="10">My Sales</th>
+                        </tr>
                         <tr class="bg-info">
                             <th colspan="10">
                                 <?php
                                     if(isset($_POST['view_date_sales'])){
                                         if($_POST['view_date_sales'] == 'view_sales_today'){
                                             $salestoday = 'btn-md active';
-                                            $salesall = 'btn-md';
+                                            $salesall = 'btn-sm';
                                             $salesweek = 'btn-sm';
                                             $salesmonth = 'btn-sm';
                                         }
                                         if($_POST['view_date_sales'] == 'view_sales_all'){
-                                            $salestoday = 'btn-md';
+                                            $salestoday = 'btn-sm';
                                             $salesall = 'btn-md active';
                                             $salesweek = 'btn-sm';
                                             $salesmonth = 'btn-sm';
