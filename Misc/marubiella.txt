@@ -1,0 +1,211 @@
+user code format (10)
+company initial, date created (strtotime())
+
+
+htaccess and pretty url
+https://stackoverflow.com/questions/28118691/yii2-htaccess-how-to-hide-frontend-web-and-backend-web-completely
+
+Active Treeview sidebar
+https://stackoverflow.com/questions/37457967/make-the-li-class-to-be-active-when-click-submenu
+
+
+
+
+OSR - Sales
+Assitant TL - Guide OSR / sales /Sales Monitoring (Per team)
+TL - Sales Monitoring (per Team)
+CSR - Confirmation of sales / All Teams
+encoder - dispathcer 
+Branch Manager - Overall monitoring (all Teams)
+
+Day-Off
+1 day per week
+
+Database
+Done - Auth
+Done - PSGC
+
+
+Done - employee 
+done - employee_position/designation
+done - employment_status
+
+employee_address - No Update
+
+employee_day_off ---not sure
+employee_daily_time_record
+
+DTR_time
+id
+employee_id / user_id
+date
+time
+in_out
+
+DTR_time
+id
+employee_id / user_id
+date
+time
+
+PLDTWIFI27Y2g
+
+
+EMPLOYEE
+ - id
+ - user_id
+ - user_code
+ - firstname
+ - middlename
+ - lastname
+ - address_id
+ - cellphone_number
+ - telephone_number
+ - date_of_birth
+ - status_id
+ - is_active
+ - date_created
+ - date_updated
+ - date_deleted
+
+EMPLOYEE_ADDRESS
+ - id
+ - prefix_address
+ - barangay_id
+ - municipality_id
+ - province_id
+ - region_id
+ - is_active
+ - date_created
+ - date_updated
+ - date_deleted
+
+EMPLOYMENT_DESGINATION
+ - id
+ - employment_designation_code
+ - employment_designation_name / code_description
+ - employment_designation_job_description
+ - is_active
+ - date_created
+ - date_updated
+ - date_deleted
+
+EMPLOYMENT_STATUS
+ - id
+ - employment_status_code
+ - employment_status_description
+ - is_active
+ - date_created
+ - date_updated
+ - date_deleted
+
+EMPLOYEE_EMPLOYMENT_STATUS / affiliation
+ - id
+ - employee_id
+ - employment_designation_id
+ - employment_status_id
+ - is_active
+ - date_created
+ - date_updated
+ - date_deleted
+
+STATUS (Terminated / Suspended)
+ - id
+ - status_code
+ - status_description
+ - is_active
+ - date_created
+ - date_updated
+ - date_deleted
+
+Product
+ - id (11)
+ - product_code (32)
+ - product_name (250)
+ - product_type (250)
+ - Product_description (1000)
+ - amount
+ - is_active
+ - date_created
+ - date_updated
+ - date_deleted
+
+
+SALES_STATUS
+ - id
+ - sales_satus_code
+ - sales_status_name
+ - sales_status_description
+ - is_active
+ - date_created
+ - date_updated
+ - date_deleted
+
+ONLINE_SALES / SALES_ONLINE
+ - id
+ - sale_code (32)
+ - sales_tracking_id (32)
+ - courier_id (11)
+ - employee_id (11)
+ - tl_id (11)
+ - customer_id (11)
+ - customer_type_id (11)
+ - product_id[array]
+ - quantity [array]
+ - collectible_amount[array]
+ - total_amount
+ - care_of (250)
+ - sales_status_id 
+ - osr_remarks (1000)
+ - page (workplace / osr page)
+ - csr_id
+ - csr_remarks (validated, unavailable, reserved, reprocess, hold)
+ - dispatcher_id
+ - dispatcher_remark
+ - is_active
+ - date_created
+ - date_updated
+ - date_deleted
+
+
+CUSTOMER_TYPE (Sole and reseller)
+ - id
+ - customer_type_code (32)
+ - customer_type_name (250)
+ - customer_type_description (1000)
+ - is_active
+ - date_created
+ - date_updated
+ - date_deleted
+
+CUSTOMER_STATUS (Bogus buyer etc)
+ - id
+ - customer_status_code (32)
+ - customer_status_name (250)
+ - customer_status_description (1000)
+ - is_active
+ - date_created
+ - date_updated
+ - date_deleted
+
+CUSTOMER
+ - id
+ - customer_code (32)
+ - customer_firstname (250)
+ - customer_middlename (250)
+ - customer_lastname (250)
+ - customer_type (250)
+ - customer_prefix_address (1000)
+ - customer_barangay_id
+ - customer_municipality_id
+ - customer_province_id
+ - customer_region_id
+ - landmark
+ - contact
+ - is_active
+ - customer_status_id
+ - date_created
+ - date_updated
+ - date_deleted
+
+
