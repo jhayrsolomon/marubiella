@@ -9,6 +9,47 @@ return [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager', // or use 'yii\rbac\PhpManager'
+            //'class' => 'yii\rbac\PhpManager', // or use 'yii\rbac\DbManager'
+        ],
+        'user' => [
+            //'class' => 'mdm\admin\models\User',
+            'identityClass' => 'mdm\admin\models\User',
+            //'loginUrl' => ['admin/user/login'],
+        ],
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+                    //'@app/views' => '@vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app'
+                    //'@app/views' => '@vendor/dmstr/yii2-adminlte-asset/views/yiisoft/yii2-app'
+                    '@app/views' => '@frontend/views'
+                ],
+            ],
+        ],
+        'assetManager' => [
+            'bundles' => [
+                'dmstr\web\AdminLteAsset' => [
+                    'skin' => 'skin-blue',
+                ],
+                /*'kartik\form\ActiveFormAsset' => [
+                    'bsDependencyEnabled' => false // do not load bootstrap assets for a specific asset bundle
+                ],*/
+            ],
+        ],
+        'access' => [
+            'class' => 'mdm\admin\components\AccessControl',
+            'rules' => [
+                [
+                    'allow' => true,
+                    'roles' => ['@'],
+                    'matchCallback' => function ($rule, $action) {
+                        // find if the user has acces to the controller action
+                        return Yii::$app->user->can(Yii::$app->controller->id.'-'.$action->id);
+                    },
+                ],
+            ],
+        ],
     ],
     'modules' => [
         'gridview' =>  [
@@ -70,36 +111,9 @@ return [
         
     ],
     'timeZone' => 'Asia/Manila', //set timezone to Manila
-    'components' => [
-        'authManager' => [
-            'class' => 'yii\rbac\DbManager', // or use 'yii\rbac\PhpManager'
-            //'class' => 'yii\rbac\PhpManager', // or use 'yii\rbac\DbManager'
-        ],
-        'user' => [
-            //'class' => 'mdm\admin\models\User',
-            'identityClass' => 'mdm\admin\models\User',
-            //'loginUrl' => ['admin/user/login'],
-        ],
-        'view' => [
-            'theme' => [
-                'pathMap' => [
-                    //'@app/views' => '@vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app'
-                    //'@app/views' => '@vendor/dmstr/yii2-adminlte-asset/views/yiisoft/yii2-app'
-                    '@app/views' => '@frontend/views'
-                ],
-            ],
-        ],
-        'assetManager' => [
-            'bundles' => [
-                'dmstr\web\AdminLteAsset' => [
-                    'skin' => 'skin-blue',
-                ],
-                /*'kartik\form\ActiveFormAsset' => [
-                    'bsDependencyEnabled' => false // do not load bootstrap assets for a specific asset bundle
-                ],*/
-            ],
-        ],
-    ],
+    /*'components' => [
+        
+    ],*/
     'as access' => [
         'class' => 'mdm\admin\components\AccessControl',
         'allowActions' => [

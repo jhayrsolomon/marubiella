@@ -6,6 +6,8 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 use yii\widgets\Breadcrumbs;
 use frontend\modules\models\Status;
+use frontend\modules\models\EmployeeAffiliation;
+use frontend\modules\models\EmploymentDesignation;
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\modules\models\EmployeeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -53,6 +55,16 @@ $context = 'Employee Master List';
                             'value' => function($model){
                                 return date('M d, Y', strtotime($model->date_of_birth));
                             },
+                        ],
+                        [
+                            'attribute' => 'employee_affilition_id',
+                            'headerOptions' => ['style' => 'color: #3c8dbc;',],
+                            'header' => 'Affiliation',
+                            'value' => function($model){
+                                $affiliation = EmployeeAffiliation::find()->where(['employee_id' => $model->id])->one();
+                                $designation = EmploymentDesignation::find()->where(['id'=>$affiliation->employment_designation_id])->one();
+                                return $designation->employment_designation_code_description;
+                            }
                         ],
                         [
                             'attribute' => 'status_id',

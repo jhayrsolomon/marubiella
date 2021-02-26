@@ -28,7 +28,7 @@
         <tbody class="text-center">
             <?php
                 echo "<tr>
-                    <td class='text-center'>".date('Y-m-d', strtotime($modelSales->date_created))."</td>
+                    <td class='text-center'>".date('Y-m-d', strtotime($salesModel->date_created))."</td>
                     <td>";
                     foreach($product as $p){
                         echo $p->product_name.'<br>';
@@ -46,7 +46,7 @@
                     echo "</td>
                     <td>".$customerName."</td>
                     <td>".$customerContact."</td>
-                    <td>".'OSR: '.$modelSales->osr_remark.'<br>CSR: '.$modelSales->csr_remark.'<br>Encoder: '.$modelSales->dispatcher_remark."</td>
+                    <td>".'OSR: '.$salesModel->osr_remark.'<br>CSR: '.$salesModel->csr_remark.'<br>Encoder: '.$salesModel->dispatcher_remark."</td>
                 </tr>";
             ?>
         </tbody>

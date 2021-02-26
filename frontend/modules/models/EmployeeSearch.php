@@ -17,7 +17,7 @@ class EmployeeSearch extends Employee
     public function rules()
     {
         return [
-            [['id', 'user_id', 'employee_address_id', 'employee_affiliation_id', 'is_active', 'status_id'], 'integer'],
+            [['id', 'user_id', 'is_active', 'status_id'], 'integer'],
             [['user_code', 'firstname', 'middlename', 'lastname', 'cellphone_number', 'telephone_number', 'date_of_birth', 'date_created', 'date_updated', 'date_deleted'], 'safe'],
         ];
     }
@@ -60,8 +60,6 @@ class EmployeeSearch extends Employee
         $query->andFilterWhere([
             'id' => $this->id,
             'user_id' => $this->user_id,
-            'employee_address_id' => $this->employee_address_id,
-            'employee_affiliation_id' => $this->employee_affiliation_id,
             'date_of_birth' => $this->date_of_birth,
             'is_active' => $this->is_active,
             'status_id' => $this->status_id,

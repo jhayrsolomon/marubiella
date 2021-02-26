@@ -63,7 +63,7 @@ class ManagerController extends Controller
         
         //SELECT employee.id, concat(employee.firstname, ' ', employee.lastname) as fullname FROM `employee` INNER JOIN employee_affiliation ON employee.employee_affiliation_id = employee_affiliation.id WHERE employee_affiliation.employment_designation_id = 3
         $leader = ArrayHelper::map(
-            Yii::$app->marubiella->createCommand('SELECT employee.id, concat(employee.firstname, " ", employee.lastname) as fullname FROM `employee` INNER JOIN employee_affiliation ON employee.employee_affiliation_id = employee_affiliation.id WHERE employee_affiliation.employment_designation_id = 1')
+            Yii::$app->marubiella->createCommand('SELECT employee.id, concat(employee.firstname, " ", employee.lastname) as fullname FROM `employee` LEFT JOIN employee_affiliation ON employee.id = employee_affiliation.employee_id WHERE employee_affiliation.employment_designation_id = 1')
             ->queryAll(),
             'id', 
             'fullname'
@@ -137,7 +137,7 @@ class ManagerController extends Controller
         
         //SELECT employee.id, concat(employee.firstname, ' ', employee.lastname) as fullname FROM `employee` INNER JOIN employee_affiliation ON employee.employee_affiliation_id = employee_affiliation.id WHERE employee_affiliation.employment_designation_id = 3
         $leader = ArrayHelper::map(
-            Yii::$app->marubiella->createCommand('SELECT employee.id, concat(employee.firstname, " ", employee.lastname) as fullname FROM `employee` INNER JOIN employee_affiliation ON employee.employee_affiliation_id = employee_affiliation.id WHERE employee_affiliation.employment_designation_id = 1')->queryAll(),/*Employee::find()
+            Yii::$app->marubiella->createCommand('SELECT employee.id, concat(employee.firstname, " ", employee.lastname) as fullname FROM `employee` LEFT JOIN employee_affiliation ON employee.id = employee_affiliation.employee_id WHERE employee_affiliation.employment_designation_id = 1')->queryAll(),/*Employee::find()
                 ->select('employee.id, concat(employee.firstname, " ", employee.lastname) as fullname')
                 ->innerJoinWith('employee_affiliation',' employee_affiliation.id= employee.employee_affiliation_id')
                 ->where(['employee_affiliation.employment_designation_id'=>'3'])

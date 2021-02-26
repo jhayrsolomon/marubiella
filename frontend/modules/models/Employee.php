@@ -10,8 +10,6 @@ use Yii;
  * @property int $id
  * @property int|null $user_id
  * @property string|null $user_code
- * @property int $employee_address_id
- * @property int $employee_affiliation_id
  * @property string $firstname
  * @property string $middlename
  * @property string $lastname
@@ -48,8 +46,8 @@ class Employee extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'employee_address_id', 'employee_affiliation_id', 'is_active', 'status_id'], 'integer'],
-            [['employee_address_id', 'employee_affiliation_id', 'firstname', 'middlename', 'lastname', 'cellphone_number', 'date_of_birth', 'status_id'], 'required'],
+            [['user_id', 'is_active', 'status_id'], 'integer'],
+            [['firstname', 'middlename', 'lastname', 'cellphone_number', 'date_of_birth', 'status_id'], 'required'],
             [['date_of_birth', 'date_created', 'date_updated', 'date_deleted'], 'safe'],
             [['user_code'], 'string', 'max' => 32],
             [['firstname', 'middlename', 'lastname'], 'string', 'max' => 250],
@@ -67,8 +65,6 @@ class Employee extends \yii\db\ActiveRecord
             'id' => 'ID',
             'user_id' => 'User ID',
             'user_code' => 'User Code',
-            'employee_address_id' => 'Employee Address ID',
-            'employee_affiliation_id' => 'Employee Affiliation ID',
             'firstname' => 'Firstname',
             'middlename' => 'Middlename',
             'lastname' => 'Lastname',
@@ -83,7 +79,7 @@ class Employee extends \yii\db\ActiveRecord
         ];
     }
     
-    public function getAffiliation()
+    /*public function getAffiliation()
     {
         return $this->hasOne(EmployeeAffiliation::className(), ['id' => 'employee_affiliation_id']);
     }
@@ -91,5 +87,5 @@ class Employee extends \yii\db\ActiveRecord
     public function getAddress()
     {
         return $this->hasOne(EmployeeAddress::className(), ['id' => 'employee_address_id']);
-    }
+    }*/
 }
