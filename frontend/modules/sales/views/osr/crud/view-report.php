@@ -75,7 +75,7 @@ $countP = count($product);
                 <!--<table id="in_out_record" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">-->
                     <thead>
                         <tr class="bg-primary">
-                            <th colspan="<?= ($countP+2); ?>">My Sales</th>
+                            <th colspan="<?= ($countP+2); ?>">My Sales: Validated</th>
                         </tr>
                         <tr class="bg-info">
                             <th colspan="<?= ($countP+2); ?>">
@@ -188,7 +188,9 @@ $countP = count($product);
                                             $totalx += $sales[$p]['sum_qty'];
                                             $p++;
                                         } else {
-                                            echo "<td>0</td>";
+                                            for($a=$p; $a<$countP; $a++){
+                                                echo "<td>0</td>";
+                                            }
                                             break;
                                         }
                                     } else {

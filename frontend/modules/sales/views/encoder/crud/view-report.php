@@ -75,7 +75,7 @@ $countP = count($product);
                 <!--<table id="in_out_record" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">-->
                     <thead>
                         <tr class="bg-primary">
-                            <th colspan="<?= ($countP+2); ?>">My Sales</th>
+                            <th colspan="<?= ($countP+2); ?>">My Sales: Validated</th>
                         </tr>
                         <tr class="bg-info">
                             <th colspan="<?= ($countP+2); ?>">
@@ -113,7 +113,7 @@ $countP = count($product);
                                     }
                                 ?>
                                 <?= Html::a('Today', 
-                                    ['/sales/osr/view-report'], [
+                                    ['/sales/encoder/view-report'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
                                         'date_sales' => 'sales_today',
@@ -121,7 +121,7 @@ $countP = count($product);
                                     'class' => ['btn btn-primary '.$salestoday],
                                 ]) ?>
                                 <?= Html::a('This Week', 
-                                    ['/sales/osr/view-report'], [
+                                    ['/sales/encoder/view-report'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
                                         'date_sales' => 'sales_week',
@@ -129,7 +129,7 @@ $countP = count($product);
                                     'class' => ['btn btn-primary '.$salesweek],
                                 ]) ?>
                                 <?= Html::a('This Month', 
-                                    ['/sales/osr/view-report'], [
+                                    ['/sales/encoder/view-report'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
                                         'date_sales' => 'sales_month',
@@ -137,7 +137,7 @@ $countP = count($product);
                                     'class' => ['btn btn-primary '.$salesmonth],
                                 ]) ?>
                                 <?= Html::a('All', 
-                                    ['/sales/osr/view-report'], [
+                                    ['/sales/encoder/view-report'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
                                         'date_sales' => 'sales_all',
@@ -146,17 +146,17 @@ $countP = count($product);
                                 ]) ?>
                             </th>
                         </tr>
-                        <tr>
+                        <!--<tr>
                             <th colspan="3">
                                 <div class="form-group row">
-                                    <!--<label for="search" class="col-sm-2 col-form-label"><i class="fa fa-search" aria-hidden="true"></i></label>-->
+                                    <label for="search" class="col-sm-2 col-form-label"><i class="fa fa-search" aria-hidden="true"></i></label>
                                     <div class="col-sm-10">
                                         <input type="search" class="form-control" id="search" placeholder="Search...">
                                     </div>
                                 </div>
                             </th>
-                            <th colspan="<?= ($countP-1); ?>"></th>
-                        </tr>
+                            <th colspan="?= ($countP-1); ?>"></th>
+                        </tr>-->
                         <tr>
                             <th>Date</th>
                             <?php
@@ -188,7 +188,9 @@ $countP = count($product);
                                             $totalx += $sales[$p]['sum_qty'];
                                             $p++;
                                         } else {
-                                            echo "<td>0</td>";
+                                            for($a=$p; $a<$countP; $a++){
+                                                echo "<td>0</td>";
+                                            }
                                             break;
                                         }
                                     } else {

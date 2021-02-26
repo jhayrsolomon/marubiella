@@ -113,7 +113,7 @@ $countP = count($product);
                                     }
                                 ?>
                                 <?= Html::a('Today', 
-                                    ['/sales/osr/view-report'], [
+                                    ['/sales/junior-leader/view-report'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
                                         'date_sales' => 'sales_today',
@@ -121,7 +121,7 @@ $countP = count($product);
                                     'class' => ['btn btn-primary '.$salestoday],
                                 ]) ?>
                                 <?= Html::a('This Week', 
-                                    ['/sales/osr/view-report'], [
+                                    ['/sales/junior-leader/view-report'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
                                         'date_sales' => 'sales_week',
@@ -129,7 +129,7 @@ $countP = count($product);
                                     'class' => ['btn btn-primary '.$salesweek],
                                 ]) ?>
                                 <?= Html::a('This Month', 
-                                    ['/sales/osr/view-report'], [
+                                    ['/sales/junior-leader/view-report'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
                                         'date_sales' => 'sales_month',
@@ -137,7 +137,7 @@ $countP = count($product);
                                     'class' => ['btn btn-primary '.$salesmonth],
                                 ]) ?>
                                 <?= Html::a('All', 
-                                    ['/sales/osr/view-report'], [
+                                    ['/sales/junior-leader/view-report'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
                                         'date_sales' => 'sales_all',
@@ -188,7 +188,9 @@ $countP = count($product);
                                             $totalx += $sales[$p]['sum_qty'];
                                             $p++;
                                         } else {
-                                            echo "<td>0</td>";
+                                            for($a=$p; $a<$countP; $a++){
+                                                echo "<td>0</td>";
+                                            }
                                             break;
                                         }
                                     } else {
