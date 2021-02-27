@@ -99,6 +99,12 @@ class SiteController extends Controller
             if (Yii::$app->user->can('development')) {
                 return $this->redirect(['/sales/dashboard']);
             }
+            if (Yii::$app->user->can('sales_osr') || Yii::$app->user->can('sales_junior') || Yii::$app->user->can('sales_leader') || Yii::$app->user->can('sales_manager') || Yii::$app->user->can('sales_csr') || Yii::$app->user->can('sales_encoder')) {
+                return $this->redirect(['/sales/dashboard']);
+            }
+            if (Yii::$app->user->can('employee_encoder')) {
+                return $this->redirect(['/administration/employee/master-list']);
+            }
             return $this->goBack();
         } else {
             $model->password = '';

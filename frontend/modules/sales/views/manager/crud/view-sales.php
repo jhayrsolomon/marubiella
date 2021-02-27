@@ -38,9 +38,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 <table id="in_out_record" class="table table-sm table-condensed table-bordered">
                 <!--<table id="in_out_record" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">-->
                     <thead>
-                        <tr class="bg-primary">
-                            <th colspan="10">My Sales</th>
-                        </tr>
                         <tr class="bg-info">
                             <th colspan="10">
                                 <?php
@@ -110,17 +107,20 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ]) ?>
                             </th>
                         </tr>
-                        <tr>
+                        <tr class="bg-primary">
+                            <th colspan="10">My Sales</th>
+                        </tr>
+                        <!--<tr>
                             <th colspan="3">
                                 <div class="form-group row">
-                                    <!--<label for="search" class="col-sm-2 col-form-label"><i class="fa fa-search" aria-hidden="true"></i></label>-->
+                                    <label for="search" class="col-sm-2 col-form-label"><i class="fa fa-search" aria-hidden="true"></i></label>
                                     <div class="col-sm-10">
                                         <input type="search" class="form-control" id="search" placeholder="Search...">
                                     </div>
                                 </div>
                             </th>
                             <th colspan="7"></th>
-                        </tr>
+                        </tr>-->
                         <tr>
                             <th class="text-center" width="2%">#</th>
                             <th class="text-center" width="11%">Date</th>
@@ -258,9 +258,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </div>
                             </th>
                         </tr>
-                        <tr class="bg-info">
+                        <!--<tr class="bg-info">
                             <th colspan="10">
-                                <?php
+                                ?php
                                     if(isset($_POST['team_date_sales'])){
                                         if($_POST['team_date_sales'] == 'team_sales_today'){
                                             $salestoday = 'btn-md active';
@@ -293,7 +293,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         $salesmonth = 'btn-sm';
                                     }
                                 ?>
-                                <?= Html::a('Today', 
+                                ?= Html::a('Today', 
                                     ['/sales/manager/view-sales'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
@@ -301,7 +301,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     ],
                                     'class' => ['btn btn-primary '.$salestoday],
                                 ]) ?>
-                                <?= Html::a('This Week', 
+                                ?= Html::a('This Week', 
                                     ['/sales/manager/view-sales'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
@@ -309,7 +309,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     ],
                                     'class' => ['btn btn-primary '.$salesweek],
                                 ]) ?>
-                                <?= Html::a('This Month', 
+                                ?= Html::a('This Month', 
                                     ['/sales/manager/view-sales'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
@@ -317,7 +317,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     ],
                                     'class' => ['btn btn-primary '.$salesmonth],
                                 ]) ?>
-                                <?= Html::a('All', 
+                                ?= Html::a('All', 
                                     ['/sales/manager/view-sales'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
@@ -326,18 +326,18 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'class' => ['btn btn-primary '.$salesall],
                                 ]) ?>
                             </th>
-                        </tr>
-                        <tr>
+                        </tr>-->
+                        <!--<tr>
                             <th colspan="3">
                                 <div class="form-group row">
-                                    <!--<label for="search" class="col-sm-2 col-form-label"><i class="fa fa-search" aria-hidden="true"></i></label>-->
+                                    <label for="search" class="col-sm-2 col-form-label"><i class="fa fa-search" aria-hidden="true"></i></label>
                                     <div class="col-sm-10">
                                         <input type="search" class="form-control" id="search" placeholder="Search...">
                                     </div>
                                 </div>
                             </th>
                             <th colspan="7"></th>
-                        </tr>
+                        </tr>-->
                         <tr>
                             <th class="text-center" width="11%">Team</th>
                             <th class="text-center" width="10%">Date</th>
@@ -355,10 +355,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?php
                             $totalqty = 0;
                             $totalprice = 0;
-                            if(count($sales) == 0){
+                            if(count($branchSales) == 0){
                                 echo "<tr><td colspan='8'>No Record(s)</td></tr>";
                             } else {
-                                foreach($sales as $key=>$value){
+                                foreach($branchSales as $key=>$value){
                                     $status = SalesStatus::find()->where(['id'=>$value->sales_status_id])->one();
                                     $customer = Customer::find()->where(['id'=>$value->customer_id])->one();
                                     $customerName = $customer->customer_firstname.' '.$customer->customer_lastname;

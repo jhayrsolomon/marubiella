@@ -63,7 +63,7 @@ class ManagerController extends Controller
         
         //SELECT employee.id, concat(employee.firstname, ' ', employee.lastname) as fullname FROM `employee` INNER JOIN employee_affiliation ON employee.employee_affiliation_id = employee_affiliation.id WHERE employee_affiliation.employment_designation_id = 3
         $leader = ArrayHelper::map(
-            Yii::$app->marubiella->createCommand('SELECT employee.id, concat(employee.firstname, " ", employee.lastname) as fullname FROM `employee` INNER JOIN employee_affiliation ON employee.employee_affiliation_id = employee_affiliation.id WHERE employee_affiliation.employment_designation_id = 1')
+            Yii::$app->marubiella->createCommand('SELECT employee.id, concat(employee.firstname, " ", employee.lastname) as fullname FROM `employee` LEFT JOIN employee_affiliation ON employee.id = employee_affiliation.employee_id WHERE employee_affiliation.employment_designation_id = 1')
             ->queryAll(),
             'id', 
             'fullname'
@@ -72,53 +72,63 @@ class ManagerController extends Controller
         if(isset($_POST['my_date_sales'])){
             if($_POST['my_date_sales'] == 'my_sales_all'){
                 //$sales = SalesOnline::find()->where(['employee_id'=>$employee->id])->all();
-                $mySales = Yii::$app->marubiella->createCommand('SELECT from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") as pdate, sales_product.product_id, SUM(sales_product.quantity) as sum_qty FROM sales_product INNER JOIN sales_online ON sales_product.sales_online_id = sales_online.id WHERE sales_online.sales_status_id = 2 GROUP BY sales_product.product_id, from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") ORDER BY from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d"), sales_product.product_id ASC')->queryAll();
+                $mySales = Yii::$app->marubiella->createCommand('SELECT from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") as pdate, sales_product.product_id, SUM(sales_product.quantity) as sum_qty FROM sales_product INNER JOIN sales_online ON sales_product.sales_online_id = sales_online.id WHERE sales_online.sales_status_id = 2 AND sales_online.employee_id = '.$employee->id.' GROUP BY sales_product.product_id, from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") ORDER BY from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d"), sales_product.product_id ASC')->queryAll();
+                
+                $sales = Yii::$app->marubiella->createCommand('SELECT from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") as pdate, sales_product.product_id, SUM(sales_product.quantity) as sum_qty FROM sales_product INNER JOIN sales_online ON sales_product.sales_online_id = sales_online.id WHERE sales_online.sales_status_id = 2 GROUP BY sales_product.product_id, from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") ORDER BY from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d"), sales_product.product_id ASC')->queryAll();
             } else {
-                if($_POST['my_date_sales'] == 'my_sales_week'){
-                    $d = date('d',strtotime('last Monday'));
-                    $end_Date = date_format(date_create(date('Y-m-').($d+6)), 'Y-m-d');
-                    $start_Date = date('Y-m-d',strtotime('last Monday'));
-                }
-                if($_POST['my_date_sales'] == 'my_sales_month'){
-                    $start_Date = date_format(date_create(date('Y-m-').'1'), 'Y-m-d');
-                    $end_Date = date('Y-m-t');
-                }
                 if($_POST['my_date_sales'] == 'my_sales_today'){
-                    $start_Date = date('Y-m-d');
-                    $end_Date = date('Y-m-d');
+                    $today = date('Y-m-d');
+                    $mySales = Yii::$app->marubiella->createCommand('SELECT from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") as pdate, sales_product.product_id, SUM(sales_product.quantity) as sum_qty FROM sales_product INNER JOIN sales_online ON sales_product.sales_online_id = sales_online.id WHERE sales_online.sales_status_id = 2 AND sales_online.employee_id = '.$employee->id.' and sales_online.date_created like "%'.$today.'%" GROUP BY sales_product.product_id, from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") ORDER BY from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d"), sales_product.product_id ASC')->queryAll();
+                    
+                    $sales = Yii::$app->marubiella->createCommand('SELECT from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") as pdate, sales_product.product_id, SUM(sales_product.quantity) as sum_qty FROM sales_product INNER JOIN sales_online ON sales_product.sales_online_id = sales_online.id WHERE sales_online.sales_status_id = 2 and sales_online.date_created like "%'.$today.'%" GROUP BY sales_product.product_id, from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") ORDER BY from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d"), sales_product.product_id ASC')->queryAll();
+                } else {
+                    if($_POST['my_date_sales'] == 'my_sales_week'){
+                        $d = date('d',strtotime('last Monday'));
+                        $end_Date = date_format(date_create(date('Y-m-').($d+6)), 'Y-m-d');
+                        $start_Date = date('Y-m-d',strtotime('last Monday'));
+                    }
+                    if($_POST['my_date_sales'] == 'my_sales_month'){
+                        $start_Date = date_format(date_create(date('Y-m-').'1'), 'Y-m-d');
+                        $end_Date = date('Y-m-t');
+                    }
+                    $mySales = Yii::$app->marubiella->createCommand('SELECT from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") as pdate, sales_product.product_id, SUM(sales_product.quantity) as sum_qty FROM sales_product INNER JOIN sales_online ON sales_product.sales_online_id = sales_online.id WHERE sales_online.sales_status_id = 2 AND sales_online.employee_id = '.$employee->id.' and sales_online.date_created between "'.$start_Date.'" and "'.$end_Date.'" GROUP BY sales_product.product_id, from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") ORDER BY from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d"), sales_product.product_id ASC')->queryAll();
+                    
+                    $sales = Yii::$app->marubiella->createCommand('SELECT from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") as pdate, sales_product.product_id, SUM(sales_product.quantity) as sum_qty FROM sales_product INNER JOIN sales_online ON sales_product.sales_online_id = sales_online.id WHERE sales_online.sales_status_id = 2 and sales_online.date_created between "'.$start_Date.'" and "'.$end_Date.'" GROUP BY sales_product.product_id, from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") ORDER BY from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d"), sales_product.product_id ASC')->queryAll();
                 }
-                $mySales = Yii::$app->marubiella->createCommand('SELECT from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") as pdate, sales_product.product_id, SUM(sales_product.quantity) as sum_qty FROM sales_product INNER JOIN sales_online ON sales_product.sales_online_id = sales_online.id WHERE sales_online.sales_status_id = 2 and sales_online.date_created between "'.$start_Date.'" and "'.$end_Date.'" GROUP BY sales_product.product_id, from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") ORDER BY from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d"), sales_product.product_id ASC')->queryAll();
             }
         } else {
-            $start_Date = date('Y-m-d');
-            $end_Date = date('Y-m-d');
-            $mySales = Yii::$app->marubiella->createCommand('SELECT from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") as pdate, sales_product.product_id, SUM(sales_product.quantity) as sum_qty FROM sales_product INNER JOIN sales_online ON sales_product.sales_online_id = sales_online.id WHERE sales_online.sales_status_id = 2 and sales_online.date_created between "'.$start_Date.'" and "'.$end_Date.'" GROUP BY sales_product.product_id, from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") ORDER BY from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d"), sales_product.product_id ASC')->queryAll();
+            $today = date('Y-m-d');
+            $mySales = Yii::$app->marubiella->createCommand('SELECT from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") as pdate, sales_product.product_id, SUM(sales_product.quantity) as sum_qty FROM sales_product INNER JOIN sales_online ON sales_product.sales_online_id = sales_online.id WHERE sales_online.sales_status_id = 2 AND sales_online.employee_id = '.$employee->id.' and sales_online.date_created like "%'.$today.'%" GROUP BY sales_product.product_id, from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") ORDER BY from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d"), sales_product.product_id ASC')->queryAll();
+            
+            $sales = Yii::$app->marubiella->createCommand('SELECT from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") as pdate, sales_product.product_id, SUM(sales_product.quantity) as sum_qty FROM sales_product INNER JOIN sales_online ON sales_product.sales_online_id = sales_online.id WHERE sales_online.sales_status_id = 2 and sales_online.date_created like "%'.$today.'%" GROUP BY sales_product.product_id, from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") ORDER BY from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d"), sales_product.product_id ASC')->queryAll();
         }
-        if(isset($_POST['team_date_sales'])){
+        /*if(isset($_POST['team_date_sales'])){
             if($_POST['team_date_sales'] == 'team_sales_all'){
                 //$sales = SalesOnline::find()->where(['employee_id'=>$employee->id])->all();
                 $sales = Yii::$app->marubiella->createCommand('SELECT from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") as pdate, sales_product.product_id, SUM(sales_product.quantity) as sum_qty FROM sales_product INNER JOIN sales_online ON sales_product.sales_online_id = sales_online.id WHERE sales_online.sales_status_id = 2 GROUP BY sales_product.product_id, from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") ORDER BY from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d"), sales_product.product_id ASC')->queryAll();
             } else {
-                if($_POST['team_date_sales'] == 'team_sales_week'){
-                    $d = date('d',strtotime('last Monday'));
-                    $end_Date = date_format(date_create(date('Y-m-').($d+6)), 'Y-m-d');
-                    $start_Date = date('Y-m-d',strtotime('last Monday'));
-                }
-                if($_POST['team_date_sales'] == 'team_sales_month'){
-                    $start_Date = date_format(date_create(date('Y-m-').'1'), 'Y-m-d');
-                    $end_Date = date('Y-m-t');
-                }
                 if($_POST['team_date_sales'] == 'team_sales_today'){
-                    $start_Date = date('Y-m-d');
-                    $end_Date = date('Y-m-d');
+                    $today = date('Y-m-d');
+                    $sales = Yii::$app->marubiella->createCommand('SELECT from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") as pdate, sales_product.product_id, SUM(sales_product.quantity) as sum_qty FROM sales_product INNER JOIN sales_online ON sales_product.sales_online_id = sales_online.id WHERE sales_online.sales_status_id = 2 and sales_online.date_created like "%'.$today.'%" GROUP BY sales_product.product_id, from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") ORDER BY from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d"), sales_product.product_id ASC')->queryAll();
+                } else {
+                    if($_POST['team_date_sales'] == 'team_sales_week'){
+                        $d = date('d',strtotime('last Monday'));
+                        $end_Date = date_format(date_create(date('Y-m-').($d+6)), 'Y-m-d');
+                        $start_Date = date('Y-m-d',strtotime('last Monday'));
+                    }
+                    if($_POST['team_date_sales'] == 'team_sales_month'){
+                        $start_Date = date_format(date_create(date('Y-m-').'1'), 'Y-m-d');
+                        $end_Date = date('Y-m-t');
+                    }
+                    $sales = Yii::$app->marubiella->createCommand('SELECT from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") as pdate, sales_product.product_id, SUM(sales_product.quantity) as sum_qty FROM sales_product INNER JOIN sales_online ON sales_product.sales_online_id = sales_online.id WHERE sales_online.sales_status_id = 2 and sales_online.date_created between "'.$start_Date.'" and "'.$end_Date.'" GROUP BY sales_product.product_id, from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") ORDER BY from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d"), sales_product.product_id ASC')->queryAll();
                 }
-                $sales = Yii::$app->marubiella->createCommand('SELECT from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") as pdate, sales_product.product_id, SUM(sales_product.quantity) as sum_qty FROM sales_product INNER JOIN sales_online ON sales_product.sales_online_id = sales_online.id WHERE sales_online.sales_status_id = 2 and sales_online.date_created between "'.$start_Date.'" and "'.$end_Date.'" GROUP BY sales_product.product_id, from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") ORDER BY from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d"), sales_product.product_id ASC')->queryAll();
             }
         } else {
-            $start_Date = date('Y-m-d');
-            $end_Date = date('Y-m-d');
-            $sales = Yii::$app->marubiella->createCommand('SELECT from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") as pdate, sales_product.product_id, SUM(sales_product.quantity) as sum_qty FROM sales_product INNER JOIN sales_online ON sales_product.sales_online_id = sales_online.id WHERE sales_online.sales_status_id = 2 and sales_online.date_created between "'.$start_Date.'" and "'.$end_Date.'" GROUP BY sales_product.product_id, from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") ORDER BY from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d"), sales_product.product_id ASC')->queryAll();
-        }
+            $today = date('Y-m-d');
+            $sales = Yii::$app->marubiella->createCommand('SELECT from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") as pdate, sales_product.product_id, SUM(sales_product.quantity) as sum_qty FROM sales_product INNER JOIN sales_online ON sales_product.sales_online_id = sales_online.id WHERE sales_online.sales_status_id = 2 and sales_online.date_created like "%'.$today.'%" GROUP BY sales_product.product_id, from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d") ORDER BY from_unixtime( UNIX_TIMESTAMP(sales_product.date_created), "%Y-%m-%d"), sales_product.product_id ASC')->queryAll();
+        }*/
+        /*echo '<pre>';
+        var_dump($sales);die;*/
         return $this->render('crud/view-report', [
             'sales' => $sales,
             'mySales' => $mySales,
@@ -137,7 +147,7 @@ class ManagerController extends Controller
         
         //SELECT employee.id, concat(employee.firstname, ' ', employee.lastname) as fullname FROM `employee` INNER JOIN employee_affiliation ON employee.employee_affiliation_id = employee_affiliation.id WHERE employee_affiliation.employment_designation_id = 3
         $leader = ArrayHelper::map(
-            Yii::$app->marubiella->createCommand('SELECT employee.id, concat(employee.firstname, " ", employee.lastname) as fullname FROM `employee` INNER JOIN employee_affiliation ON employee.employee_affiliation_id = employee_affiliation.id WHERE employee_affiliation.employment_designation_id = 1')->queryAll(),/*Employee::find()
+            Yii::$app->marubiella->createCommand('SELECT employee.id, concat(employee.firstname, " ", employee.lastname) as fullname FROM `employee` LEFT JOIN employee_affiliation ON employee.id = employee_affiliation.employee_id WHERE employee_affiliation.employment_designation_id = 1')->queryAll(),/*Employee::find()
                 ->select('employee.id, concat(employee.firstname, " ", employee.lastname) as fullname')
                 ->innerJoinWith('employee_affiliation',' employee_affiliation.id= employee.employee_affiliation_id')
                 ->where(['employee_affiliation.employment_designation_id'=>'3'])
@@ -147,62 +157,63 @@ class ManagerController extends Controller
             'fullname'
         );
         if(isset($_POST['my_date_sales'])){
-            if($_POST['my_date_sales'] == 'my_sales_today'){
-                $today = date('Y-m-d');
-                $mySales = SalesOnline::find()->where(['date_created' => $today])->all();
-            }
-            if($_POST['my_date_sales'] == 'my_sales_week'){
-                $d = date('d',strtotime('last Monday'));
-                $end_Date = date_format(date_create(date('Y-m-').($d+6)), 'Y-m-d');
-                $start_Date = date('Y-m-d',strtotime('last Monday'));
-                
-                $mySales = SalesOnline::find()->where(['between', 'date_created', $start_Date, $end_Date])->all();
-            }
-            if($_POST['my_date_sales'] == 'my_sales_month'){
-                $start_Date = date_format(date_create(date('Y-m-').'1'), 'Y-m-d');
-                $end_Date = date('Y-m-t');
-                
-                $mySales = SalesOnline::find()->where(['between', 'date_created', $start_Date, $end_Date])->all();
-            }
             if($_POST['my_date_sales'] == 'my_sales_all'){
-                $mySales = SalesOnline::find()->all();
+                $mySalesValidated = SalesOnline::find()->where(['employee_id' => $employee->id, 'sales_status_id'=>2])->all();
+                
+                $mySales = SalesOnline::find()->where(['employee_id' => $employee->id, 'sales_status_id'=>2])->orderBy('sales_status_id ASC')->all();
+                
+                $branchSalesValidated = SalesOnline::find()->where(['employee_id' => $employee->id, 'sales_status_id'=>2])->all();
+                
+                $branchSales = SalesOnline::find()->where(['sales_status_id'=>2])->orderBy('sales_status_id ASC')->all();
+            } else {
+                if($_POST['my_date_sales'] == 'my_sales_today'){
+                    $today = date('Y-m-d');
+                    $mySalesValidated = SalesOnline::find()->where(['employee_id' => $employee->id, 'sales_status_id'=>2])->andWhere(['like', 'date_created', $today])->all();
+            
+                    $mySales = SalesOnline::find()->where(['employee_id' => $employee->id, 'sales_status_id'=>2])->andWhere(['like', 'date_created', $today])->orderBy('sales_status_id ASC')->all();
+                    
+                    $branchSalesValidated = SalesOnline::find()->where(['sales_status_id'=>2])->andWhere(['like', 'date_created', $today])->all();
+
+                    $branchSales = SalesOnline::find()->where(['like', 'date_created', $today])->andWhere(['sales_status_id'=>2])->orderBy('sales_status_id ASC')->all();
+                } else {
+                    if($_POST['my_date_sales'] == 'my_sales_week'){
+                        $d = date('d',strtotime('last Monday'));
+                        $end_Date = date_format(date_create(date('Y-m-').($d+6)), 'Y-m-d');
+                        $start_Date = date('Y-m-d',strtotime('last Monday'));
+                    }
+                    if($_POST['my_date_sales'] == 'my_sales_month'){
+                        $start_Date = date_format(date_create(date('Y-m-').'1'), 'Y-m-d');
+                        $end_Date = date('Y-m-t');
+                    }
+                    
+                    $mySalesValidated = SalesOnline::find()->where(['employee_id' => $employee->id, 'sales_status_id'=>2])->andWhere(['between', 'date_created', $start_Date, $end_Date])->all();
+
+                    $mySales = SalesOnline::find()->where(['employee_id' => $employee->id, 'sales_status_id'=>2])->andWhere(['between', 'date_created', $start_Date, $end_Date])->orderBy('sales_status_id ASC')->all();
+                    
+                    $branchSalesValidated = SalesOnline::find()->where(['sales_status_id'=>2])->andWhere(['between', 'date_created', $start_Date, $end_Date])->all();
+
+                    $branchSales = SalesOnline::find()->where(['between', 'date_created', $start_Date, $end_Date])->andWhere(['sales_status_id'=>2])->orderBy('sales_status_id ASC')->all();
+                }
             }
             //SELECT product_id, SUM(quantity) FROM sales_product GROUP BY product_id, from_unixtime( UNIX_TIMESTAMP(date_created), '%Y-%m-%d') ORDER BY from_unixtime( UNIX_TIMESTAMP(date_created), '%Y-%m-%d'), product_id ASC
         } else {
             $today = date('Y-m-d');
-            $mySales = SalesOnline::find()->where(['date_created' => $today])->all();
-        }
-        
-        if(isset($_POST['team_date_sales'])){
-            if($_POST['team_date_sales'] == 'team_sales_today'){
-                $today = date('Y-m-d');
-                $sales = SalesOnline::find()->where(['date_created' => $today])->all();
-            }
-            if($_POST['team_date_sales'] == 'team_sales_week'){
-                $d = date('d',strtotime('last Monday'));
-                $end_Date = date_format(date_create(date('Y-m-').($d+6)), 'Y-m-d');
-                $start_Date = date('Y-m-d',strtotime('last Monday'));
-                
-                $sales = SalesOnline::find()->where(['between', 'date_created', $start_Date, $end_Date])->all();
-            }
-            if($_POST['team_date_sales'] == 'team_sales_month'){
-                $start_Date = date_format(date_create(date('Y-m-').'1'), 'Y-m-d');
-                $end_Date = date('Y-m-t');
-                
-                $sales = SalesOnline::find()->where(['between', 'date_created', $start_Date, $end_Date])->all();
-            }
-            if($_POST['team_date_sales'] == 'team_sales_all'){
-                $sales = SalesOnline::find()->all();
-            }
-            //SELECT product_id, SUM(quantity) FROM sales_product GROUP BY product_id, from_unixtime( UNIX_TIMESTAMP(date_created), '%Y-%m-%d') ORDER BY from_unixtime( UNIX_TIMESTAMP(date_created), '%Y-%m-%d'), product_id ASC
-        } else {
-            $today = date('Y-m-d');
-            $sales = SalesOnline::find()->where(['date_created' => $today])->all();
+            $mySalesValidated = SalesOnline::find()->where(['employee_id' => $employee->id, 'sales_status_id'=>2])->andWhere(['like', 'date_created', $today])->all();
+
+            $mySales = SalesOnline::find()->where(['employee_id' => $employee->id, 'sales_status_id'=>2])->andWhere(['like', 'date_created', $today])->orderBy('sales_status_id ASC')->all();
+            
+            $branchSalesValidated = SalesOnline::find()->where(['sales_status_id'=>2])->andWhere(['like', 'date_created', $today])->all();
+
+            $branchSales = SalesOnline::find()->where(['like', 'date_created', $today])->andWhere(['sales_status_id'=>2])->orderBy('sales_status_id ASC')->all();
         }
         
         return $this->render('crud/view-sales', [
-            'sales' => $sales,
+            //'sales' => $sales,
+            //'mySales' => $mySales,
+            'mySalesValidated' => $mySalesValidated,
             'mySales' => $mySales,
+            'branchSalesValidated' => $branchSalesValidated,
+            'branchSales' => $branchSales,
             'employee' => $employee,
             'leader' => $leader,
             'model' => $model,

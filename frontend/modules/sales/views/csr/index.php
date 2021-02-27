@@ -120,7 +120,13 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <?php echo $this->render('crud/_search', ['model' => $searchModel]); ?>
+                <?php echo $this->render('crud/_search', ['model' => $searchModel, 'view_date_sales'=>(isset($_POST['view_date_sales']))?$_POST['view_date_sales']:'view_sales_today']); ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <!--?php echo $this->render('crud/_search', ['model' => $searchModel]); ?>-->
+                <div class="col-md-12 col-sm-12 bg-primary"><h5><strong>For Confirmation</strong></h5></div>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     //'filterModel' => $searchModel,
@@ -134,31 +140,34 @@ $this->params['breadcrumbs'][] = $this->title;
                             'detail' => function ($model, $key, $index) {
                                 if(isset($_POST['view_date_sales'])){
                                     if($_POST['view_date_sales'] == 'view_sales_all'){
-                                        $sales = SalesOnline::find()->all();
+                                        $start_Date = date_format(date_create(date('Y-').'1-'.'1'), 'Y-m-d');
+                                        $end_Date = date('Y-m-t');
+                                        $sales = SalesOnline::find()->where(['<>', 'sales_status_id', 2])->all();
+                                        //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
                                     } else {
                                         if($_POST['view_date_sales'] == 'view_sales_today'){
-                                            $start_Date = date('Y-m-d');
-                                            $end_Date = date('Y-m-d');
+                                            $today = date('Y-m-d');
+                                            $sales = SalesOnline::find()->where(['like', 'date_created', $today])->andWhere(['<>', 'sales_status_id', 2])->all();
+                                        } else {
+                                            if($_POST['view_date_sales'] == 'view_sales_week'){
+                                                $d = date('d',strtotime('last Monday'));
+                                                $end_Date = date_format(date_create(date('Y-m-').($d+6)), 'Y-m-d');
+                                                $start_Date = date('Y-m-d',strtotime('last Monday'));
+                                            }
+                                            if($_POST['view_date_sales'] == 'view_sales_month'){
+                                                $start_Date = date_format(date_create(date('Y-m-').'1'), 'Y-m-d');
+                                                $end_Date = date('Y-m-t');
+                                            }
+                                            $sales = SalesOnline::find()->where(['between', 'date_created', $start_Date, $end_Date])->andWhere(['<>', 'sales_status_id', 2])->all();
                                         }
-                                        if($_POST['view_date_sales'] == 'view_sales_week'){
-                                            $d = date('d',strtotime('last Monday'));
-                                            $end_Date = date_format(date_create(date('Y-m-').($d+6)), 'Y-m-d');
-                                            $start_Date = date('Y-m-d',strtotime('last Monday'));
-                                        }
-                                        if($_POST['view_date_sales'] == 'view_sales_month'){
-                                            $start_Date = date_format(date_create(date('Y-m-').'1'), 'Y-m-d');
-                                            $end_Date = date('Y-m-t');
-                                        }
-                                        $sales = SalesOnline::find()->where(['between', 'date_created', $start_Date, $end_Date])->all();
                                     }
                                 } else {
-                                    $start_Date = date('Y-m-d');
-                                    $end_Date = date('Y-m-d');
-                                    $sales = SalesOnline::find()->where(['between', 'date_created', $start_Date, $end_Date])->all();
+                                    $today = date('Y-m-d');
+                                    $sales = SalesOnline::find()->where(['like', 'date_created', $today])->andWhere(['<>', 'sales_status_id', 2])->all();
                                 }
                                 foreach($sales as $value){
                                     if($model->sales_code == $value->sales_code){
-                                        $modelSales = $value;
+                                        $salesModel = $value;
                                         $customer = Customer::find()->where(['id'=>$value->customer_id])->one();
                                         $customerName = $customer->customer_firstname.' '.$customer->customer_lastname;
                                         $customerContact = 'Cell#:'.$customer->cellphone_number.'<br>Tell#:'.$customer->telephone_number;
@@ -173,7 +182,149 @@ $this->params['breadcrumbs'][] = $this->title;
                                 }
                                 
                                 return $this->render('csrExpandRow', [
-                                    'modelSales' => $modelSales,
+                                    'salesModel' => $salesModel,
+                                    'customerName' => $customerName,
+                                    'customerContact' => $customerContact,
+                                    'productSales' => $productSales,
+                                    'product' => $product,
+                                ]);
+                            },
+                        ],
+
+                        //'id',
+                        'sales_code',
+                        //'sales_tracking_number',
+                        //'courier_id',
+                        //'employee_id',
+                        [
+                            'attribute' => 'employee_id',
+                            'header' => 'Employee',
+                            'headerOptions' => ['style' => 'color: #3c8dbc;',],
+                            'value' => function($model){
+                                $employee = Employee::find()->where(['id'=>$model->employee_id])->one();
+                                $name = $employee->firstname.' '.$employee->lastname;
+                                return $name;
+                            },
+                        ],
+                        'team_id',
+                        [
+                            'header' => 'Branch',
+                            'headerOptions' => ['style' => 'color: #3c8dbc;',],
+                        ],
+                        //'customer_id',
+                        //'customer_type_id',
+                        //'care_of',
+                        //'sales_status_id',
+                        [
+                            'attribute' => 'sales_status_id',
+                            'header' => 'Sales Status',
+                            'headerOptions' => ['style' => 'color: #3c8dbc;',],
+                            'value' => function($model){
+                                $status = SalesStatus::find()->where(['id'=>$model->sales_status_id])->one();
+                                $name = $status->sales_status_name;
+                                return $name;
+                            },
+                        ],
+                        [
+                            'attribute' => 'total_amount',
+                            'header' => 'Total Amount',
+                            'headerOptions' => ['style' => 'color: #3c8dbc;',],
+                            'value' => function($model){
+                                return number_format($model->total_amount, 2, '.', ',');
+                            },
+                        ],
+                        //'total_amount',
+                        //'osr_remark',
+                        //'page',
+                        //'csr_id',
+                        //'csr_remark',
+                        //'dispatcher_id',
+                        //'dispatcher_remark',
+                        //'is_active',
+                        //'date_created',
+                        //'date_updated',
+                        //'date_deleted',
+
+                        //['class' => 'yii\grid\ActionColumn'],
+                        [
+                            'header' => 'Action',
+                            'class' => 'yii\grid\ActionColumn',
+                            'headerOptions' => ['style' => 'width: 100px; color: #3c8dbc; width: 7%',],
+                            'template' => '{assign}',
+                            'buttons' => [
+                                'assign' => function($url, $model, $key) {
+                                    return "<button type='button' class='btn btn-primary btn-xs' data-toggle='modal' data-target='#checkLocation' onclick='getSalesId(".$model->id.")'>
+                                        <i class='glyphicon glyphicon-edit' aria-hidden='true'></i>
+                                    </button>";
+
+                                }
+                            ]
+                        ]
+                    ],
+                    'responsive'=>true,
+                    'hover'=>true,
+                ]); ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="col-md-12 col-sm-12 bg-danger"><h5><strong>Unavailable</strong></h5></div>
+                <?= GridView::widget([
+                    'dataProvider' => $dataProviderUnavailable,
+                    //'filterModel' => $searchModel,
+                    'columns' => [
+                        //['class' => 'yii\grid\SerialColumn'],
+                        [
+                            'class' => 'kartik\grid\ExpandRowColumn',
+                            'value' => function ($model, $key, $index) {
+                                return GridView::ROW_COLLAPSED;
+                            },
+                            'detail' => function ($model, $key, $index) {
+                                if(isset($_POST['view_date_sales'])){
+                                    if($_POST['view_date_sales'] == 'view_sales_all'){
+                                        $start_Date = date_format(date_create(date('Y-').'1-'.'1'), 'Y-m-d');
+                                        $end_Date = date('Y-m-t');
+                                        $sales = SalesOnline::find()->where(['sales_status_id'=>3])->all();
+                                        //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+                                    } else {
+                                        if($_POST['view_date_sales'] == 'view_sales_today'){
+                                            $today = date('Y-m-d');
+                                            $sales = SalesOnline::find()->where(['like', 'date_created', $today])->andWhere(['sales_status_id'=>3])->all();
+                                        } else {
+                                            if($_POST['view_date_sales'] == 'view_sales_week'){
+                                                $d = date('d',strtotime('last Monday'));
+                                                $end_Date = date_format(date_create(date('Y-m-').($d+6)), 'Y-m-d');
+                                                $start_Date = date('Y-m-d',strtotime('last Monday'));
+                                            }
+                                            if($_POST['view_date_sales'] == 'view_sales_month'){
+                                                $start_Date = date_format(date_create(date('Y-m-').'1'), 'Y-m-d');
+                                                $end_Date = date('Y-m-t');
+                                            }
+                                            $sales = SalesOnline::find()->where(['between', 'date_created', $start_Date, $end_Date])->andWhere(['<>', 'sales_status_id', 2])->all();
+                                        }
+                                    }
+                                } else {
+                                    $today = date('Y-m-d');
+                                    $sales = SalesOnline::find()->where(['like', 'date_created', $today])->andWhere(['<>', 'sales_status_id', 2])->all();
+                                }
+                                foreach($sales as $value){
+                                    if($model->sales_code == $value->sales_code){
+                                        $salesModel = $value;
+                                        $customer = Customer::find()->where(['id'=>$value->customer_id])->one();
+                                        $customerName = $customer->customer_firstname.' '.$customer->customer_lastname;
+                                        $customerContact = 'Cell#:'.$customer->cellphone_number.'<br>Tell#:'.$customer->telephone_number;
+                                        //$product = Product::find()->where(['IN', 'id', json_decode($value->product_id)])->all();
+                                        $productSales = SalesProduct::find()->where(['sales_online_id'=>$value->id])->all();
+                                        $productId = array();
+                                        foreach($productSales as $item){
+                                            array_push($productId, $item->product_id);
+                                        }
+                                        $product = Product::find()->where(['IN', 'id', $productId])->all();
+                                    }
+                                }
+                                
+                                return $this->render('csrExpandRow', [
+                                    'salesModel' => $salesModel,
                                     'customerName' => $customerName,
                                     'customerContact' => $customerContact,
                                     'productSales' => $productSales,

@@ -37,7 +37,8 @@ $navCss = 'active';
                         [
                             'label' => 'Administration',
                             'url' => ['/administration/dashboard'],
-                            'visible' => Yii::$app->user->can('development'),
+                            'visible' => (Yii::$app->user->can('development') || Yii::$app->user->can('employee_encoder'))?1:0,
+                            //'visible' => Yii::$app->user->checkAccess('administration'),
                             'options' => [
                                 'class' => [(Yii::$app->controller->module->id == 'administration')?$navCss:'',],
                             ],
@@ -53,7 +54,7 @@ $navCss = 'active';
                         [
                             'label' => 'Sales',
                             'url' => ['/sales/dashboard'],
-                            'visible' => Yii::$app->user->can('development'),
+                            'visible' => (Yii::$app->user->can('development') || Yii::$app->user->can('sales_osr') || Yii::$app->user->can('sales_csr') || Yii::$app->user->can('sales_manager') || Yii::$app->user->can('sales-encoder')|| Yii::$app->user->can('sales_junior') || Yii::$app->user->can('sales_leader'))?1:0,
                             'options' => [
                                 'class' => [(Yii::$app->controller->module->id == 'sales')?$navCss:'',],
                             ],

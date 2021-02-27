@@ -6,7 +6,7 @@ use yii\widgets\ActiveForm;
 
 use frontend\modules\models\Product;
 
-$this->title = 'OSR';
+$this->title = 'csr';
 //$this->params['breadcrumbs'][] = $this->title;
 $context = 'Sales Report';
 $this->params['breadcrumbs'][] = ['label' => 'Sales Onlines', 'url' => ['index']];
@@ -146,17 +146,17 @@ $countP = count($product);
                                 ]) ?>
                             </th>
                         </tr>
-                        <tr>
+                        <!--<tr>
                             <th colspan="3">
                                 <div class="form-group row">
-                                    <!--<label for="search" class="col-sm-2 col-form-label"><i class="fa fa-search" aria-hidden="true"></i></label>-->
+                                    <label for="search" class="col-sm-2 col-form-label"><i class="fa fa-search" aria-hidden="true"></i></label>
                                     <div class="col-sm-10">
                                         <input type="search" class="form-control" id="search" placeholder="Search...">
                                     </div>
                                 </div>
                             </th>
-                            <th colspan="<?= ($countP-1); ?>"></th>
-                        </tr>
+                            <th colspan="?= ($countP-1); ?>"></th>
+                        </tr>-->
                         <tr>
                             <th>Date</th>
                             <?php

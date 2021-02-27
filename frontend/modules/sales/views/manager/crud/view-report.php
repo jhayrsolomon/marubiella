@@ -36,9 +36,6 @@ $countP = count($product);
                 <table id="in_out_record" class="table table-sm table-condensed table-bordered">
                 <!--<table id="in_out_record" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">-->
                     <thead>
-                        <tr class="bg-primary">
-                            <th colspan="<?= ($countP+2); ?>">My Sales</th>
-                        </tr>
                         <tr class="bg-info">
                             <th colspan="<?= ($countP+2); ?>">
                                 <?php
@@ -107,6 +104,9 @@ $countP = count($product);
                                     'class' => ['btn btn-primary '.$mysalesall],
                                 ]) ?>
                             </th>
+                        </tr>
+                        <tr class="bg-primary">
+                            <th colspan="<?= ($countP+2); ?>">My Sales</th>
                         </tr>
                         <!--<tr>
                             <th colspan="3">
@@ -237,10 +237,10 @@ $countP = count($product);
                 <!--<table id="in_out_record" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">-->
                     <thead>
                         <tr class="bg-primary">
-                            <th colspan="<?= ($countP+2); ?>">Branch Sales</th>
+                            <th colspan="<?= ($countP+3); ?>">Branch Sales</th>
                         </tr>
                         <tr class="bg-info">
-                            <th colspan="<?= ($countP+2); ?>">
+                            <th colspan="<?= ($countP+3); ?>">
                                 <div class="col-sm-6 col-md-6 form-group pull-left">
                                     <!--<label for="employee-id" class="col-sm-2 col-form-label"><h5><strong>Leader</strong></h5></label>-->
                                     <?php $form = ActiveForm::begin(); ?>
@@ -289,9 +289,9 @@ $countP = count($product);
                                 </div>
                             </th>
                         </tr>
-                        <tr class="bg-info">
-                            <th colspan="<?= ($countP+2); ?>">
-                                <?php
+                        <!--<tr class="bg-info">
+                            <th colspan="?= ($countP+2); ?>">
+                                ?php
                                     if(isset($_POST['team_date_sales'])){
                                         if($_POST['team_date_sales'] == 'team_sales_today'){
                                             $salestoday = 'btn-md active';
@@ -324,7 +324,7 @@ $countP = count($product);
                                         $salesmonth = 'btn-sm';
                                     }
                                 ?>
-                                <?= Html::a('Today', 
+                                ?= Html::a('Today', 
                                     ['/sales/manager/view-report'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
@@ -332,7 +332,7 @@ $countP = count($product);
                                     ],
                                     'class' => ['btn btn-primary '.$salestoday],
                                 ]) ?>
-                                <?= Html::a('This Week', 
+                                ?= Html::a('This Week', 
                                     ['/sales/manager/view-report'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
@@ -340,7 +340,7 @@ $countP = count($product);
                                     ],
                                     'class' => ['btn btn-primary '.$salesweek],
                                 ]) ?>
-                                <?= Html::a('This Month', 
+                                ?= Html::a('This Month', 
                                     ['/sales/manager/view-report'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
@@ -348,7 +348,7 @@ $countP = count($product);
                                     ],
                                     'class' => ['btn btn-primary '.$salesmonth],
                                 ]) ?>
-                                <?= Html::a('All', 
+                                ?= Html::a('All', 
                                     ['/sales/manager/view-report'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
@@ -357,7 +357,7 @@ $countP = count($product);
                                     'class' => ['btn btn-primary '.$salesall],
                                 ]) ?>
                             </th>
-                        </tr>
+                        </tr>-->
                         <!--<tr>
                             <th colspan="3">
                                 <div class="form-group row">
@@ -393,7 +393,7 @@ $countP = count($product);
                                 $p = $s;
                                 $totalx = 0;
                                 echo "<tr>
-                                    <td>Team name</td>
+                                    <td>Team name ".($s+1)."</td>
                                     <td>".$sales[$s]['pdate']."</td>";
                                 for($x=0; $x < $countP; $x++){
                                     if(isset($sales[$p]['pdate'])){
@@ -404,7 +404,9 @@ $countP = count($product);
                                             $totalx += $sales[$p]['sum_qty'];
                                             $p++;
                                         } else {
-                                            echo "<td>0</td>";
+                                            for($a=$p;$a<$countP;$a++){
+                                                echo "<td>0</td>";
+                                            }
                                             break;
                                         }
                                     } else {

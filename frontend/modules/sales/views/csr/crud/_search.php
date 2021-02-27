@@ -11,12 +11,13 @@ use yii\widgets\ActiveForm;
 <div class="sales-online-search">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['index'],
+        'action' => ['verify-sales'],
         'method' => 'get',
     ]); ?>
     
     <div class="container-fluid bg-info">
         <div class="row">
+            <!--<input type="hidden" name="view_date_sales" id="view_date_sales" value="?= $view_date_sales; ?>" />-->
             <label for="search">Search:</label>
             <div class="col-md-12 col-sm-12 form-group" id="search">
                 <div class="col-md-4 col-sm-4">

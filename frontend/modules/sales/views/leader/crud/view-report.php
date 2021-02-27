@@ -36,9 +36,6 @@ $countP = count($product);
                 <table id="in_out_record" class="table table-sm table-condensed table-bordered">
                 <!--<table id="in_out_record" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">-->
                     <thead>
-                        <tr class="bg-primary">
-                            <th colspan="<?= ($countP+2); ?>">My Sales</th>
-                        </tr>
                         <tr class="bg-info">
                             <th colspan="<?= ($countP+2); ?>">
                                 <?php
@@ -108,17 +105,20 @@ $countP = count($product);
                                 ]) ?>
                             </th>
                         </tr>
-                        <tr>
+                        <tr class="bg-primary">
+                            <th colspan="<?= ($countP+2); ?>">My Sales</th>
+                        </tr>
+                        <!--<tr>
                             <th colspan="3">
                                 <div class="form-group row">
-                                    <!--<label for="search" class="col-sm-2 col-form-label"><i class="fa fa-search" aria-hidden="true"></i></label>-->
+                                    <label for="search" class="col-sm-2 col-form-label"><i class="fa fa-search" aria-hidden="true"></i></label>
                                     <div class="col-sm-10">
                                         <input type="search" class="form-control" id="search" placeholder="Search...">
                                     </div>
                                 </div>
                             </th>
                             <th colspan="<?= ($countP-1); ?>"></th>
-                        </tr>
+                        </tr>-->
                         <tr>
                             <th>Date</th>
                             <?php
@@ -150,7 +150,9 @@ $countP = count($product);
                                             $totalx += $sales[$p]['sum_qty'];
                                             $p++;
                                         } else {
-                                            echo "<td>0</td>";
+                                            for($a=$p; $a<$countP; $a++){
+                                                echo "<td>0</td>";
+                                            }
                                             break;
                                         }
                                     } else {
@@ -229,9 +231,9 @@ $countP = count($product);
                         <tr class="bg-primary">
                             <th colspan="<?= ($countP+2); ?>">Team Sales</th>
                         </tr>
-                        <tr class="bg-info">
+                        <!--<tr class="bg-info">
                             <th colspan="<?= ($countP+2); ?>">
-                                <?php
+                                ?php
                                     if(isset($_POST['team_date_sales'])){
                                         if($_POST['team_date_sales'] == 'team_sales_today'){
                                             $teamsalestoday = 'btn-md active';
@@ -264,7 +266,7 @@ $countP = count($product);
                                         $teamsalesmonth = 'btn-sm';
                                     }
                                 ?>
-                                <?= Html::a('Today', 
+                                ?= Html::a('Today', 
                                     ['/sales/leader/view-report'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
@@ -272,7 +274,7 @@ $countP = count($product);
                                     ],
                                     'class' => ['btn btn-primary '.$teamsalestoday],
                                 ]) ?>
-                                <?= Html::a('This Week', 
+                                ?= Html::a('This Week', 
                                     ['/sales/leader/view-report'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
@@ -280,7 +282,7 @@ $countP = count($product);
                                     ],
                                     'class' => ['btn btn-primary '.$teamsalesweek],
                                 ]) ?>
-                                <?= Html::a('This Month', 
+                                ?= Html::a('This Month', 
                                     ['/sales/leader/view-report'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
@@ -288,7 +290,7 @@ $countP = count($product);
                                     ],
                                     'class' => ['btn btn-primary '.$teamsalesmonth],
                                 ]) ?>
-                                <?= Html::a('All', 
+                                ?= Html::a('All', 
                                     ['/sales/leader/view-report'], [
                                     'data-method' => 'POST',
                                     'data-params' => [
@@ -297,18 +299,18 @@ $countP = count($product);
                                     'class' => ['btn btn-primary '.$teamsalesall],
                                 ]) ?>
                             </th>
-                        </tr>
-                        <tr>
+                        </tr>-->
+                        <!--<tr>
                             <th colspan="3">
                                 <div class="form-group row">
-                                    <!--<label for="search" class="col-sm-2 col-form-label"><i class="fa fa-search" aria-hidden="true"></i></label>-->
+                                    <label for="search" class="col-sm-2 col-form-label"><i class="fa fa-search" aria-hidden="true"></i></label>
                                     <div class="col-sm-10">
                                         <input type="search" class="form-control" id="search" placeholder="Search...">
                                     </div>
                                 </div>
                             </th>
                             <th colspan="<?= ($countP-1); ?>"></th>
-                        </tr>
+                        </tr>-->
                         <tr>
                             <th width="10%">Name</th>
                             <th width="10%">Date</th>
@@ -344,7 +346,9 @@ $countP = count($product);
                                             $totalx += $teamsales[$p]['sum_qty'];
                                             $p++;
                                         } else {
-                                            echo "<td>0</td>";
+                                            for($a=$p; $a<$countP; $a++){
+                                                echo "<td>0</td>";
+                                            }
                                             break;
                                         }
                                     } else {

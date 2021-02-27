@@ -3,6 +3,8 @@ use yii\bootstrap\Nav;
 use yii\helpers\Url;
 $controllerCss = 'active menu-open';
 $actionCss = 'active';
+
+include('permission.php');
 ?>
 <aside class="main-sidebar">
 
@@ -22,12 +24,12 @@ $actionCss = 'active';
 
         <ul class="sidebar-menu tree" data-widget="tree">
             <li class="header">Main Navigation</li>
-            <li class="<?= (Yii::$app->controller->id == 'dashboard')?$actionCss:''; ?>">
+            <li class="<?= (Yii::$app->controller->id == 'dashboard')?$actionCss:''; ?>" <?= $dashboard; ?> >
                 <a href="<?php echo Url::base(true).'/sales/dashboard';?>">
                     <i class="fa fa-calendar" aria-hidden="true"></i> <span>Dashboard</span>
                 </a>
             </li>
-            <li class="treeview <?= (Yii::$app->controller->id == 'osr')?$controllerCss:''; ?>">
+            <li class="treeview <?= (Yii::$app->controller->id == 'osr')?$controllerCss:''; ?>" <?= $osr; ?> >
                 <a href="#">
                     <i class="fa fa-users"></i> <span>OSR</span>
                     <span class="pull-right-container">
@@ -52,7 +54,7 @@ $actionCss = 'active';
                     </li>
                 </ul>
             </li>
-            <li class="treeview <?= (Yii::$app->controller->id == 'junior-leader')?$controllerCss:''; ?>">
+            <li class="treeview <?= (Yii::$app->controller->id == 'junior-leader')?$controllerCss:''; ?>" <?= $junior; ?> >
                 <a href="#">
                     <i class="fa fa-users"></i> <span>Junior Leader</span>
                     <span class="pull-right-container">
@@ -77,7 +79,7 @@ $actionCss = 'active';
                     </li>
                 </ul>
             </li>
-            <li class="treeview <?= (Yii::$app->controller->id == 'leader')?$controllerCss:''; ?>">
+            <li class="treeview <?= (Yii::$app->controller->id == 'leader')?$controllerCss:''; ?>" <?= $leader; ?> >
                 <a href="#">
                     <i class="fa fa-users"></i> <span>Leader</span>
                     <span class="pull-right-container">
@@ -102,7 +104,7 @@ $actionCss = 'active';
                     </li>
                 </ul>
             </li>
-            <li class="treeview <?= (Yii::$app->controller->id == 'manager')?$controllerCss:''; ?>">
+            <li class="treeview <?= (Yii::$app->controller->id == 'manager')?$controllerCss:''; ?>" <?= $manager; ?> >
                 <a href="#">
                     <i class="fa fa-users"></i> <span>Manager</span>
                     <span class="pull-right-container">
@@ -127,7 +129,7 @@ $actionCss = 'active';
                     </li>
                 </ul>
             </li>
-            <li class="treeview <?= (Yii::$app->controller->id == 'csr')?$controllerCss:''; ?>">
+            <li class="treeview <?= (Yii::$app->controller->id == 'csr')?$controllerCss:''; ?>" <?= $csr; ?> >
                 <a href="#">
                     <i class="fa fa-users"></i> <span>CSR</span>
                     <span class="pull-right-container">
@@ -157,7 +159,7 @@ $actionCss = 'active';
                     </li>
                 </ul>
             </li>
-            <li class="treeview <?= (Yii::$app->controller->id == 'encoder')?$controllerCss:''; ?>">
+            <li class="treeview <?= (Yii::$app->controller->id == 'encoder')?$controllerCss:''; ?>" <?= $encoder; ?> >
                 <a href="#">
                     <i class="fa fa-users"></i> <span>Encoder</span>
                     <span class="pull-right-container">

@@ -21,6 +21,7 @@ use yii\web\NotFoundHttpException;
 
 use yii\helpers\ArrayHelper;
 use frontend\modules\models\EmployeeSearch;
+use frontend\modules\models\Employee;
 
 /**
  * User controller
@@ -175,10 +176,10 @@ class UserController extends Controller
             if ($user = $model->signup()) {
                 $pkId = $user->getPrimaryKey();
                 $auth = User::findOne($pkId);
-                $employee = Employee::findOne(['id' => $_POST['Employee']['user_id']]);
+                $employee = Employee::findOne(['id' => $_POST['EmployeeSearch']['user_id']]);
                 $employee->updateAttributes(['user_id' => $pkId, 'user_code' => $auth->auth_key]);
                 //return $this->goHome();
-                return $this->redirect(['admin']);
+                //return $this->redirect(['admin']);
             }
         }
 

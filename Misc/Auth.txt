@@ -1,0 +1,16 @@
+Marubiella
+Client ID
+613165396308-qnrijt0lhcbgpp5k2o1jj2v7e2flfsb7.apps.googleusercontent.com
+
+Client Secret
+c7qmAfaOE9ReQzPkVBIJtGQE
+
+Marubiella2
+Client ID
+613165396308-ttaa3eqptvocavoad8gnsufenfn987ir.apps.googleusercontent.com
+
+Client Secret
+CeHsxB_G8ok_Sra6R0N3txCl
+
+API Key
+AIzaSyApyMwaBq9cM8MleixKnoQx6Rl2Yxp9tQM

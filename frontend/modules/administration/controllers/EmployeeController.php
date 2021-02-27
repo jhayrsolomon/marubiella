@@ -110,7 +110,7 @@ class EmployeeController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }*/
         if ($model->load(Yii::$app->request->post()) && $address->load(Yii::$app->request->post()) && $affiliation->load(Yii::$app->request->post())) {
-            $model->save();
+            $model->save(false);
             $id = $model->getPrimaryKey();
             $address->employee_id = $id;
             $affiliation->employee_id = $id;
